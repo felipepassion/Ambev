@@ -3,6 +3,7 @@
 using Ambev.DeveloperEvaluation.Domain.Validation;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 /// <summary>
 /// Represents an item in a sale.
@@ -13,11 +14,13 @@ public class SaleItem : BaseEntity
     /// <summary>
     /// Gets or sets the identifier of the parent sale.
     /// </summary>
+    [ForeignKey(nameof(Sale))]
     public required Guid SaleId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the product involved in this sale item.
     /// </summary>
+    [ForeignKey(nameof(Product))]
     public required Guid ProductId { get; set; }
 
     /// <summary>

@@ -3,6 +3,7 @@
 using Ambev.DeveloperEvaluation.Domain.Validation;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 /// <summary>
 /// Aggregate root entity for sales.
@@ -28,6 +29,7 @@ public class Sale : BaseEntity
     /// <summary>
     /// Gets or sets the branch identifier where the sale occurred.
     /// </summary>
+    [ForeignKey(nameof(Branch))]
     public required Guid BranchId { get; set; }
 
     /// <summary>
@@ -54,6 +56,11 @@ public class Sale : BaseEntity
     /// Collection of items related to this sale.
     /// </summary>
     public virtual List<SaleItem> Items { get; set; } = new();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual Branch Branch { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Sale"/> class.
