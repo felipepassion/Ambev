@@ -12,7 +12,7 @@ public class Branch : BaseEntity
     /// <summary>
     /// Gets or sets the branch name.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Indicates whether the branch is active.

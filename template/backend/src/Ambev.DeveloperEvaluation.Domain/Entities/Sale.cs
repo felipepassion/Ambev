@@ -43,7 +43,7 @@ public class Sale : BaseEntity
     /// <summary>
     /// Gets or sets the creation date and time for the sale record.
     /// </summary>
-    public required DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     /// <summary>
     /// Gets or sets the date and time when the sale record was last updated.
