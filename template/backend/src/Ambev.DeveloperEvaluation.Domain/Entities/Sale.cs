@@ -40,7 +40,9 @@ public class Sale : BaseEntity
     /// <summary>
     /// Gets or sets the total amount of the entire sale.
     /// </summary>
-    public required decimal TotalAmount { get; set; }
+    [Column("TotalAmount")]
+    private decimal _totalAmount;
+    public decimal TotalAmount => (_totalAmount = this.Items.Sum(x => x.TotalItemAmount));
 
     /// <summary>
     /// Gets or sets the creation date and time for the sale record.
@@ -55,12 +57,12 @@ public class Sale : BaseEntity
     /// <summary>
     /// Collection of items related to this sale.
     /// </summary>
-    public virtual List<SaleItem> Items { get; set; } = new();
+    public required virtual List<SaleItem> Items { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual Branch Branch { get; set; }
+    public virtual Branch Branch { get; set; } = default!;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Sale"/> class.

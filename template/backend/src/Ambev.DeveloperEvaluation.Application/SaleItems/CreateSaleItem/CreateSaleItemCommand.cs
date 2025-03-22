@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
-using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.SaleItems.CreateSaleItem;
@@ -21,9 +21,14 @@ namespace Ambev.DeveloperEvaluation.Application.SaleItems.CreateSaleItem;
 public class CreateSaleItemCommand : IRequest<CreateSaleItemResult>
 {
     /// <summary>
-    /// Gets or sets the name for the saleitem.
+    /// Gets or sets the product identifier for this sale item.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public Guid ProductId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the quantity of this product to be purchased.
+    /// </summary>
+    public int Quantity { get; set; }
 
     public ValidationResultDetail Validate()
     {

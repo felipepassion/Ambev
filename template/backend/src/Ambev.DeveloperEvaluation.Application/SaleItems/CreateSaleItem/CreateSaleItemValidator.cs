@@ -1,14 +1,12 @@
-﻿using FluentValidation;
+﻿using Ambev.DeveloperEvaluation.Application.SaleItems.CreateSaleItem;
+using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.Application.SaleItems.CreateSaleItem;
+namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 
 /// <summary>
-/// Validator for <see cref="CreateSaleItemCommand"/>, defining validation rules for saleitem creation.
+/// Validator for <see cref="CreateSaleItemCommand"/>, defining
+/// basic rules for each item in a sale.
 /// </summary>
-/// <remarks>
-/// Validation rules include:
-/// - Name: Required, must not exceed 100 characters
-/// </remarks>
 public class CreateSaleItemCommandValidator : AbstractValidator<CreateSaleItemCommand>
 {
     /// <summary>
@@ -16,8 +14,12 @@ public class CreateSaleItemCommandValidator : AbstractValidator<CreateSaleItemCo
     /// </summary>
     public CreateSaleItemCommandValidator()
     {
-        RuleFor(cmd => cmd.Name)
-            .NotEmpty().WithMessage("SaleItem name cannot be empty.")
-            .MaximumLength(100).WithMessage("SaleItem name cannot exceed 100 characters.");
+        RuleFor(i => i.ProductId)
+            .NotEqual(Guid.Empty)
+            .WithMessage("ProductId is required.");
+
+        RuleFor(i => i.Quantity)
+            .GreaterThan(0).WithMessage("Quantity must be at least 1.")
+            .LessThanOrEqualTo(20).WithMessage("Cannot sell more than 20 items of the same product.");
     }
 }

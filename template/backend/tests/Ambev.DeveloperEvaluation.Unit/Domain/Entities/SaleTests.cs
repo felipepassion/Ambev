@@ -40,7 +40,7 @@ public class SaleTests
     public void Given_NegativeTotalAmount_When_Validated_Then_ShouldBeInvalid()
     {
         var sale = SaleTestData.GenerateValidSale();
-        sale.TotalAmount = -100;
+        sale.Items.ForEach(x=> x.TotalItemAmount = -100);
 
         var result = sale.Validate();
 

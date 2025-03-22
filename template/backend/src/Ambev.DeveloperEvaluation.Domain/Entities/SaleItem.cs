@@ -15,7 +15,7 @@ public class SaleItem : BaseEntity
     /// Gets or sets the identifier of the parent sale.
     /// </summary>
     [ForeignKey(nameof(Sale))]
-    public required Guid SaleId { get; set; }
+    public Guid SaleId { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets the identifier of the product involved in this sale item.

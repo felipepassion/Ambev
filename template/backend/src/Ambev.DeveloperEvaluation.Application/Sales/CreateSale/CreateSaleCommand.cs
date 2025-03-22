@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.SaleItems.CreateSaleItem;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
@@ -25,7 +26,7 @@ public class CreateSaleCommand : IRequest<CreateSaleResult>
     /// Gets or sets a collection of items to be purchased in this sale.
     /// Each item should specify at least the product identifier and the quantity.
     /// </summary>
-    public List<CreateSaleItemDto> Items { get; set; } = new();
+    public List<CreateSaleItemCommand> Items { get; set; } = new();
 
     /// <summary>
     /// Performs validation on this command using <see cref="CreateSaleCommandValidator"/>.

@@ -13,7 +13,6 @@ public static class SaleTestData
             SaleDate = DateTime.UtcNow,
             UserId = Guid.NewGuid(),
             BranchId = Guid.NewGuid(),
-            TotalAmount = 100,
             Items = new List<SaleItem>
             {
                 SaleItemTestData.GenerateValidItem(quantity: 5, discount: 0.1m)

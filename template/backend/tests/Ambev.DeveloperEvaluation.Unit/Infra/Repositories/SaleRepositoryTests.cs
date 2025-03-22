@@ -32,7 +32,15 @@ public class SaleRepositoryTests
             SaleDate = DateTime.UtcNow,
             UserId = Guid.NewGuid(),
             BranchId = Guid.NewGuid(),
-            TotalAmount = 150.75m
+            Items = new List<SaleItem>
+            {
+                new SaleItem
+                {
+                    ProductId = Guid.NewGuid(),
+                    Quantity = 2,
+                    UnitPrice = 50.25m
+                }
+            }
         };
 
         var created = await _saleRepository.CreateAsync(sale);
@@ -43,7 +51,7 @@ public class SaleRepositoryTests
         var fromDb = await _context.Sales.FindAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.SaleNumber.Should().Be("SALE-123");
-        fromDb.TotalAmount.Should().Be(150.75m);
+        fromDb.TotalAmount.Should().Be(sale.TotalAmount);
     }
 
     [Fact]
@@ -55,19 +63,26 @@ public class SaleRepositoryTests
             SaleDate = DateTime.UtcNow,
             UserId = Guid.NewGuid(),
             BranchId = Guid.NewGuid(),
-            TotalAmount = 99.99m
+            Items = new List<SaleItem>
+            {
+                new SaleItem
+                {
+                    ProductId = Guid.NewGuid(),
+                    Quantity = 2,
+                    UnitPrice = 50.25m
+                }
+            }
         };
         var created = await _saleRepository.CreateAsync(sale);
 
         created.SaleNumber = "SALE-XYZ";
         created.IsCancelled = true;
-        created.TotalAmount = 120.00m;
 
         var updated = await _saleRepository.UpdateAsync(created);
 
         updated.SaleNumber.Should().Be("SALE-XYZ");
         updated.IsCancelled.Should().BeTrue();
-        updated.TotalAmount.Should().Be(120.00m);
+        updated.TotalAmount.Should().Be(sale.TotalAmount);
 
         var fromDb = await _context.Sales.FindAsync(created.Id);
         fromDb.Should().NotBeNull();
@@ -90,7 +105,15 @@ public class SaleRepositoryTests
             SaleDate = DateTime.UtcNow,
             UserId = Guid.NewGuid(),
             BranchId = Guid.NewGuid(),
-            TotalAmount = 250m
+            Items = new List<SaleItem>
+            {
+                new SaleItem
+                {
+                    ProductId = Guid.NewGuid(),
+                    Quantity = 2,
+                    UnitPrice = 50.25m
+                }
+            }
         };
         await _saleRepository.CreateAsync(sale);
 
@@ -108,7 +131,15 @@ public class SaleRepositoryTests
             SaleDate = DateTime.UtcNow,
             UserId = Guid.NewGuid(),
             BranchId = Guid.NewGuid(),
-            TotalAmount = 999.99m
+            Items = new List<SaleItem>
+            {
+                new SaleItem
+                {
+                    ProductId = Guid.NewGuid(),
+                    Quantity = 2,
+                    UnitPrice = 50.25m
+                }
+            }
         };
         var created = await _saleRepository.CreateAsync(sale);
 
