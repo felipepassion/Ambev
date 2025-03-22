@@ -6,7 +6,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Tests.RepositoryTests
+namespace Ambev.DeveloperEvaluation.Unit.Infra.Repositories
 {
     public class ProductRepositoryTests
     {
