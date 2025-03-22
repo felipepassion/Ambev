@@ -14,7 +14,6 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
 {
     private readonly IBranchRepository _branchRepository;
     private readonly IMapper _mapper;
-    private readonly IPasswordHasher _passwordHasher;
 
     /// <summary>
     /// Initializes a new instance of CreateBranchHandler
@@ -22,11 +21,10 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
     /// <param name="branchRepository">The branch repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="validator">The validator for CreateBranchCommand</param>
-    public CreateBranchHandler(IBranchRepository branchRepository, IMapper mapper, IPasswordHasher passwordHasher)
+    public CreateBranchHandler(IBranchRepository branchRepository, IMapper mapper)
     {
         _branchRepository = branchRepository;
         _mapper = mapper;
-        _passwordHasher = passwordHasher;
     }
 
     /// <summary>

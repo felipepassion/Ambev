@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -14,7 +13,6 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
-    private readonly IPasswordHasher _passwordHasher;
 
     /// <summary>
     /// Initializes a new instance of CreateProductHandler
@@ -22,11 +20,10 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
     /// <param name="productRepository">The product repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="validator">The validator for CreateProductCommand</param>
-    public CreateProductHandler(IProductRepository productRepository, IMapper mapper, IPasswordHasher passwordHasher)
+    public CreateProductHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
         _mapper = mapper;
-        _passwordHasher = passwordHasher;
     }
 
     /// <summary>

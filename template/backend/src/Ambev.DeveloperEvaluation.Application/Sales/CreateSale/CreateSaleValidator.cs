@@ -20,18 +20,6 @@ public class CreateSaleCommandValidator : AbstractValidator<CreateSaleCommand>
             .NotNull().WithMessage("Items list must not be null.")
             .NotEmpty().WithMessage("At least one item is required to create a sale.");
 
-        RuleForEach(cmd => cmd.Items)
-            .ChildRules(item =>
-            {
-                item.RuleFor(i => i.ProductId)
-                    .NotEmpty()
-                    .WithMessage("ProductId is required.");
-
-                item.RuleFor(i => i.Quantity)
-                    .GreaterThan(0).WithMessage("Quantity must be at least 1.")
-                    .LessThanOrEqualTo(20).WithMessage("Cannot sell more than 20 items of the same product.");
-            });
-
         // Per-item rules: each line must not exceed 20
         RuleForEach(cmd => cmd.Items)
             .ChildRules(item =>
