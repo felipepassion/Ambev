@@ -20,40 +20,14 @@ public class CreateSaleHandlerTests
     private readonly IBranchRepository _branchRepository;
     private readonly IProductRepository _productRepository;
     private readonly CreateSaleHandler _handler;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public CreateSaleHandlerTests()
     {
         _saleRepository = Substitute.For<ISaleRepository>();
         _branchRepository = Substitute.For<IBranchRepository>();
         _productRepository = Substitute.For<IProductRepository>();
-        _httpContextAccessor = InitializeHttpContextAccessor();
 
         _handler = new CreateSaleHandler(InitializeHttpContextAccessor(), _saleRepository, _branchRepository, _productRepository);
-    }
-
-    private IHttpContextAccessor InitializeHttpContextAccessor()
-    {
-        var result = Substitute.For<IHttpContextAccessor>();
-
-        // Create a fake user identity with a NameIdentifier claim
-        var claims = new[]
-        {
-                new Claim(ClaimTypes.NameIdentifier, "11111111-1111-1111-1111-111111111111")
-            };
-        var identity = new ClaimsIdentity(claims, "TestAuth");
-        var principal = new ClaimsPrincipal(identity);
-
-        // Create a fake HttpContext with that principal
-        var httpContext = new DefaultHttpContext
-        {
-            User = principal
-        };
-
-        // Whenever we access result.HttpContext, return our fake context
-        result.HttpContext.Returns(httpContext);
-
-        return result;
     }
 
     /// <summary>
@@ -267,5 +241,29 @@ public class CreateSaleHandlerTests
         // 3) 10 items of unitPrice=50 => rawTotal=500 => discount=20% => final=400
         // sum = 30 + 90 + 400 = 520
         return sale.TotalAmount == 520m;
+    }
+
+    private IHttpContextAccessor InitializeHttpContextAccessor()
+    {
+        var result = Substitute.For<IHttpContextAccessor>();
+
+        // Create a fake user identity with a NameIdentifier claim
+        var claims = new[]
+        {
+                new Claim(ClaimTypes.NameIdentifier, "11111111-1111-1111-1111-111111111111")
+            };
+        var identity = new ClaimsIdentity(claims, "TestAuth");
+        var principal = new ClaimsPrincipal(identity);
+
+        // Create a fake HttpContext with that principal
+        var httpContext = new DefaultHttpContext
+        {
+            User = principal
+        };
+
+        // Whenever we access result.HttpContext, return our fake context
+        result.HttpContext.Returns(httpContext);
+
+        return result;
     }
 }
