@@ -14,13 +14,13 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 /// </summary>
 public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
 {
-    private readonly HttpContextAccessor _httpFactory;
+    private readonly IHttpContextAccessor _httpFactory;
     private readonly ISaleRepository _saleRepository;
     private readonly IBranchRepository _branchRepository;
     private readonly IProductRepository _productRepository;
 
     public CreateSaleHandler(
-        HttpContextAccessor factory,
+        IHttpContextAccessor factory,
         ISaleRepository saleRepository,
         IBranchRepository branchRepository,
         IProductRepository productRepository)
