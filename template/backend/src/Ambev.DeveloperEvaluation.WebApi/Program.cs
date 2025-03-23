@@ -32,7 +32,7 @@ public class Program
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-
+            builder.Services.AddHttpContextAccessor();
             builder.AddBasicHealthChecks();
             builder.Services.AddSwaggerGen();
 
