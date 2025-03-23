@@ -109,7 +109,7 @@ public class CreateSaleHandlerTests
         Func<Task> act = () => _handler.Handle(command, default);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>()
+        await act.Should().ThrowAsync<KeyNotFoundException>()
             .WithMessage($"Branch with ID '{command.BranchId}' does not exist.");
     }
 

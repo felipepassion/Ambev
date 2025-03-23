@@ -12,11 +12,11 @@ namespace Ambev.DeveloperEvaluation.Integration.Routes;
 /// <summary>
 /// Integration tests for Products endpoints.
 /// </summary>
-public class ProductsIntegrationTests : IClassFixture<IntegrationTestFactory>
+public class ProductsIntegrationTests : IClassFixture<IntegrationTestFactory2>
 {
     private readonly HttpClient _client;
 
-    public ProductsIntegrationTests(IntegrationTestFactory factory)
+    public ProductsIntegrationTests(IntegrationTestFactory2 factory)
     {
         // Cria client com a aplicação “subida” e DB InMemory
         _client = factory.CreateClient();
@@ -115,7 +115,6 @@ public class ProductsIntegrationTests : IClassFixture<IntegrationTestFactory>
     [Fact]
     public async Task DeleteProduct_ShouldReturn200_AndThen404WhenGet()
     {
-        // 1) Cria produto
         var createReq = new CreateProductRequest
         {
             Name = "ProductToDelete",
@@ -132,7 +131,6 @@ public class ProductsIntegrationTests : IClassFixture<IntegrationTestFactory>
         var delResp = await _client.DeleteAsync($"/api/products/{productId}");
         delResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        // 3) Tenta get => se mapeado KeyNotFoundException => 404
         var getResp = await _client.GetAsync($"/api/products/{productId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
