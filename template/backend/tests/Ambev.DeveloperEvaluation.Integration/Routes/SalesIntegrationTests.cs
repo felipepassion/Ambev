@@ -15,7 +15,7 @@ namespace Ambev.DeveloperEvaluation.Integration.Routes;
 /// <summary>
 /// Integration tests for the Sales endpoints.
 /// </summary>
-public class SalesIntegrationTests : IClassFixture<IntegrationTestFactory4>
+public class SalesIntegrationTests : IClassFixture<SalesIntegrationTestFactory>
 {
     private readonly HttpClient _client;
 
@@ -24,7 +24,7 @@ public class SalesIntegrationTests : IClassFixture<IntegrationTestFactory4>
     public static Guid Branch_ID => new Guid("D6EB9EE5-8544-4A4B-8863-0DB6707AD0C5");
     public static Guid User_ID => new Guid("8E9C5B87-49E4-4FE4-96DE-7889DAB989EC");
 
-    public SalesIntegrationTests(IntegrationTestFactory4 factory)
+    public SalesIntegrationTests(SalesIntegrationTestFactory factory)
     {
         _client = factory.CreateClient();
     }

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ambev.DeveloperEvaluation.Integration.Factories;
 
-public class IntegrationTestFactory3 : WebApplicationFactory<Program>
+public class ProductsIntegrationTestFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -22,7 +22,7 @@ public class IntegrationTestFactory3 : WebApplicationFactory<Program>
 
             services.AddDbContext<DefaultContext>(options =>
             {
-                options.UseInMemoryDatabase("IntegrationTestDb_Branches3");
+                options.UseInMemoryDatabase("IntegrationTestDb_Branches-Products");
             });
 
             services.AddControllers(options =>

@@ -12,11 +12,11 @@ namespace Ambev.DeveloperEvaluation.Integration.Routes;
 /// <summary>
 /// Integration tests for Branches endpoints
 /// </summary>
-public class BranchesIntegrationTests : IClassFixture<IntegrationTestFactory3>
+public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFactory>
 {
     private readonly HttpClient _client;
 
-    public BranchesIntegrationTests(IntegrationTestFactory3 factory)
+    public BranchesIntegrationTests(BranchesIntegrationTestFactory factory)
     {
         // Cria client com a aplicação “subida” e DB InMemory
         _client = factory.CreateClient();
