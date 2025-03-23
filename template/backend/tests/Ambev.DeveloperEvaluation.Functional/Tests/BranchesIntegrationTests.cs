@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
-using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Functional.Extensions;
+using Ambev.DeveloperEvaluation.Functional.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Integration.Routes;
+namespace Ambev.DeveloperEvaluation.Functional.Tests;
 
 /// <summary>
 /// Integration tests for Branches endpoints
@@ -38,7 +38,6 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
         // Assert - status
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        // Lê o JSON retornado
         var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponseWithData<CreateBranchResponse>>();
         apiResponse.Should().NotBeNull();
         apiResponse!.Success.Should().BeTrue();
@@ -61,7 +60,6 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
-        // Retorna lista de errors ou algo do tipo
         var errors = await response.Content.ReadFromJsonAsync<List<object>>();
         errors.Should().NotBeNull();
         errors!.Count.Should().BeGreaterThan(0);
@@ -70,7 +68,7 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
     [Fact]
     public async Task GetBranch_ShouldReturn200_WhenExists()
     {
-        // Primeiro criar um branch
+        // Arrange
         var createReq = new CreateBranchRequest { Name = "GetBranchTest" };
         var createResp = await _client.PostAsJsonAsync("/api/branches", createReq);
         createResp.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -78,7 +76,7 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
         var createdApiResp = await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateBranchResponse>>();
         var createdId = createdApiResp!.Data!.Id;
 
-        // Act - agora faz GET
+        // Act
         var getResp = await _client.GetAsync($"/api/branches/{createdId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -92,7 +90,6 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
     [Fact]
     public async Task GetBranch_WithInvalidId_ShouldReturn400()
     {
-        // Guid.Empty => triggers validation
         var resp = await _client.GetAsync($"/api/branches/{Guid.Empty}");
         resp.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
@@ -105,14 +102,11 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
         createResp.StatusCode.Should().Be(HttpStatusCode.Created);
         var createdData = await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateBranchResponse>>();
         var branchId = createdData!.Data!.Id;
-
        
         var delResp = await _client.DeleteAsync($"/api/branches/{branchId}");
         delResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        // 3) Tenta get => 404 ou  KeyNotFound => depende do seu global filter
         var getResp = await _client.GetAsync($"/api/branches/{branchId}");
-        // Se vc converte KeyNotFoundException => 404, então:
         getResp.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

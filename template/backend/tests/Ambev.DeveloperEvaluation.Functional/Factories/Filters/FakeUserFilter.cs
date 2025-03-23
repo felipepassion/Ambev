@@ -1,7 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Routes;
+﻿using Ambev.DeveloperEvaluation.Functional.Extensions;
+using Ambev.DeveloperEvaluation.Functional.Tests;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 public class FakeUserFilter : IAsyncActionFilter
 {
@@ -10,7 +10,7 @@ public class FakeUserFilter : IAsyncActionFilter
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, SalesIntegrationTests.User_ID.ToString()),
-            new Claim(ClaimTypes.Name, "john_doe_integration")
+            new Claim(ClaimTypes.Name, HttpClientExtensions.USERNAME)
         };
         var identity = new ClaimsIdentity(claims, "Fake");
         context.HttpContext.User = new ClaimsPrincipal(identity);

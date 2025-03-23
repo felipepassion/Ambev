@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
-using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Functional.Extensions;
+using Ambev.DeveloperEvaluation.Functional.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Integration.Routes;
+namespace Ambev.DeveloperEvaluation.Functional.Tests;
 
 /// <summary>
 /// Integration tests for Products endpoints.
@@ -67,7 +67,6 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
-        // Retorna lista de erros ou algo do tipo
         var errors = await response.Content.ReadFromJsonAsync<List<object>>();
         errors.Should().NotBeNull();
         errors!.Count.Should().BeGreaterThan(0);
@@ -105,7 +104,6 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
     [Fact]
     public async Task GetProduct_WithInvalidId_ShouldReturn400()
     {
-        // ID = Guid.Empty => triggers validation
         var resp = await _client.GetAsync($"/api/products/{Guid.Empty}");
         resp.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }

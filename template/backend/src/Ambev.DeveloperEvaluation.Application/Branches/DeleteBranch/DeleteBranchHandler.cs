@@ -40,6 +40,6 @@ public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBr
         if (!success)
             throw new KeyNotFoundException($"Branch with ID {request.Id} not found");
 
-        return new DeleteBranchResponse { Success = true };
+        return new DeleteBranchResponse {  Success = true };
     }
 }

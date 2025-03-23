@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Integration.Extensions;
-using Ambev.DeveloperEvaluation.Integration.Routes;
+using Ambev.DeveloperEvaluation.Functional.Extensions;
+using Ambev.DeveloperEvaluation.Functional.Tests;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ambev.DeveloperEvaluation.Integration.Factories;
+namespace Ambev.DeveloperEvaluation.Functional.Factories;
 
 public class ProductsIntegrationTestFactory : WebApplicationFactory<Program>
 {

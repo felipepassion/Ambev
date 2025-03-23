@@ -68,7 +68,6 @@ public class Program
                 app.UseSwaggerUI();
             }
 
-            app.UseMiddleware<ValidationExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -78,6 +77,7 @@ public class Program
             app.UseBasicHealthChecks();
 
             app.MapControllers();
+            app.UseMiddleware<ValidationExceptionMiddleware>();
 
             app.Run();
         }

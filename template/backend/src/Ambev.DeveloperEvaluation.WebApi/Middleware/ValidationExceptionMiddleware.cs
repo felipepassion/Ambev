@@ -2,6 +2,7 @@
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Text.Json;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Middleware
@@ -47,13 +48,15 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             var response = new ApiResponse
             {
                 Success = false,
-                Message = exception.Message
+                Message = exception.Message + $"{(exception.InnerException == null ? "" : exception.InnerException.Message)}"
             };
 
             var jsonOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
+            
+            Log.Logger.Error(exception, "An error occurred");
 
             return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
         }

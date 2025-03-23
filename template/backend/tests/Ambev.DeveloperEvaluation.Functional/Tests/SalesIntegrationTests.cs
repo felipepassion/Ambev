@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
-using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Functional.Extensions;
+using Ambev.DeveloperEvaluation.Functional.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
@@ -11,7 +11,7 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Integration.Routes;
+namespace Ambev.DeveloperEvaluation.Functional.Tests;
 
 /// <summary>
 /// Integration tests for the Sales endpoints.

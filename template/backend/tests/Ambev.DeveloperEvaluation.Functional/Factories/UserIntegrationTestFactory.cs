@@ -1,19 +1,17 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Integration.Extensions;
-using Ambev.DeveloperEvaluation.Integration.Routes;
+using Ambev.DeveloperEvaluation.Functional.Extensions;
+using Ambev.DeveloperEvaluation.Functional.Tests;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-using System.Runtime.CompilerServices;
 
-namespace Ambev.DeveloperEvaluation.Integration.Factories;
+namespace Ambev.DeveloperEvaluation.Functional.Factories;
 
-public class BranchesIntegrationTestFactory : WebApplicationFactory<Program>
+public class UserIntegrationTestFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -24,19 +22,11 @@ public class BranchesIntegrationTestFactory : WebApplicationFactory<Program>
             if (descriptor != null)
                 services.Remove(descriptor);
 
-            services.AddHttpClient();
-
             services.AddDbContext<DefaultContext>(options =>
             {
-                options.UseInMemoryDatabase("IntegrationTestDb-Branches");
+                options.UseInMemoryDatabase("IntegrationTestDb-Users");
             });
 
-            services.AddControllers(options =>
-            {
-                options.Filters.Add<FakeUserFilter>();
-            });
-
-            services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 
             var sp = services.BuildServiceProvider();
 
@@ -44,7 +34,6 @@ public class BranchesIntegrationTestFactory : WebApplicationFactory<Program>
             {
                 var context = scope.ServiceProvider.GetRequiredService<DefaultContext>();
                 var _passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-                var _httpClient = scope.ServiceProvider.GetRequiredService<HttpClient>();
 
                 context.Database.EnsureCreated();
 

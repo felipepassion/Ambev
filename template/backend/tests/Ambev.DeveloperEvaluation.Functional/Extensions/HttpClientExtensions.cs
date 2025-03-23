@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace Ambev.DeveloperEvaluation.Integration.Extensions;
+namespace Ambev.DeveloperEvaluation.Functional.Extensions;
 
 public static class HttpClientExtensions
 {
