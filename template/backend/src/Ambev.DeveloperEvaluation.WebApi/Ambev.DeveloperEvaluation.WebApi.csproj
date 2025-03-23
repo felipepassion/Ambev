@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -29,12 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Branches\ListUsers\" />
-    <Folder Include="Features\Branches\UpdateUser\" />
-    <Folder Include="Features\Products\ListUsers\" />
-    <Folder Include="Features\Products\UpdateUser\" />
-    <Folder Include="Features\Sales\ListUsers\" />
-    <Folder Include="Features\Sales\UpdateUser\" />
     <Folder Include="Features\Users\GetUser\" />
     <Folder Include="Features\Users\DeleteUser\" />
     <Folder Include="Features\Users\ListUsers\" />

@@ -18,10 +18,17 @@ public class Program
     {
         try
         {
-            Log.Information("Starting web application");
-
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.AddDefaultLogging();
+
+            Log.Logger = new LoggerConfiguration()
+               .Enrich.FromLogContext()
+               .WriteTo.Console()
+               .WriteTo.Seq(builder.Configuration["SERILOG_SEQ_URL"]!)
+               .CreateLogger();
+
+            Log.Information("Starting web application");
+
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -31,8 +38,7 @@ public class Program
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
+                    builder.Configuration.GetConnectionString("DefaultConnection")
                 )
             );
 
@@ -54,6 +60,8 @@ public class Program
 
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
+
+            app.UseDeveloperExceptionPage();
 
             if (app.Environment.IsDevelopment())
             {
