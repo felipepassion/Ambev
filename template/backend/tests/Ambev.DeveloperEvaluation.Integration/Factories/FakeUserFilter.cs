@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Tests.Integration;
+﻿using Ambev.DeveloperEvaluation.Integration.Routes;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 using System.Threading.Tasks;

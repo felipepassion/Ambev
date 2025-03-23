@@ -1,13 +1,13 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Integration.Routes;
 using Ambev.DeveloperEvaluation.ORM;
-using Ambev.DeveloperEvaluation.Tests.Integration;
 using Ambev.DeveloperEvaluation.WebApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ambev.DeveloperEvaluation.IntegrationTests;
+namespace Ambev.DeveloperEvaluation.Integration.Factories;
 
 public class IntegrationTestFactory : WebApplicationFactory<Program>
 {

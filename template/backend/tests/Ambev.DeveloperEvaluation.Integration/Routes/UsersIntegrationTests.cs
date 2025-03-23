@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.IntegrationTests;
+﻿using Ambev.DeveloperEvaluation.Integration.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Tests.Integration;
+namespace Ambev.DeveloperEvaluation.Integration.Routes;
 
 /// <summary>
 /// Integration tests for Users endpoints.
