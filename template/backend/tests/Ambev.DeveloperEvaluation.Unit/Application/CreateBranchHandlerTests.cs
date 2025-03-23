@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Branchs.CreateBranch;
+﻿using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.TestData;

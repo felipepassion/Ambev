@@ -1,7 +1,7 @@
 using AutoMapper;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.GetBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 
 /// <summary>
 /// Profile for mapping between Branch entity and GetBranchResponse

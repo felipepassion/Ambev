@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
-namespace Ambev.DeveloperEvaluation.Unit.WebApi.TestData
+namespace Ambev.DeveloperEvaluation.Unit.Presentation.TestData
 {
     /// <summary>
     /// Provides methods for generating test data (requests) for the UsersController.

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.GetBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 
 /// <summary>
 /// Validator for GetBranchCommand

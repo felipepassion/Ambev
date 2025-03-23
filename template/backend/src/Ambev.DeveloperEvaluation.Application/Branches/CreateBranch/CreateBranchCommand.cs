@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.CreateBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 
 /// <summary>
 /// Command for creating a new branch.

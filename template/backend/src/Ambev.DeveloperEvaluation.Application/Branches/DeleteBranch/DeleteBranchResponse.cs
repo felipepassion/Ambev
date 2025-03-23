@@ -1,4 +1,4 @@
-namespace Ambev.DeveloperEvaluation.Application.Branchs.DeleteBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
 
 /// <summary>
 /// Response model for DeleteBranch operation

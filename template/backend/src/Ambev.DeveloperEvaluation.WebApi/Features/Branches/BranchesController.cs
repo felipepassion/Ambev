@@ -1,6 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Branchs.CreateBranch;
-using Ambev.DeveloperEvaluation.Application.Branchs.DeleteBranch;
-using Ambev.DeveloperEvaluation.Application.Branchs.GetBranch;
+﻿using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
+using Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
+using Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.DeleteBranch;
@@ -16,7 +16,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class BranchsController : BaseController
+public class BranchesController : BaseController
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ public class BranchsController : BaseController
     /// </summary>
     /// <param name="mediator">The mediator instance</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public BranchsController(IMediator mediator, IMapper mapper)
+    public BranchesController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

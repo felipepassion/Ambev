@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.Application.Branchs.CreateBranch;
+﻿namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 
 /// <summary>
 /// Represents the response returned after successfully creating a new branch.

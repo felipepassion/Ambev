@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.Unit.WebApi.TestData; // Importa nossa classe de dados
+using Ambev.DeveloperEvaluation.Unit.Presentation.TestData;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.WebApi
+namespace Ambev.DeveloperEvaluation.Unit.Presentation
 {
     /// <summary>
     /// Contains unit tests for the <see cref="UsersController"/> class.
@@ -28,7 +28,13 @@ namespace Ambev.DeveloperEvaluation.Unit.WebApi
         public UsersControllerTests()
         {
             _mediator = Substitute.For<IMediator>();
-            _mapper = Substitute.For<IMapper>();
+            // create mapper with profiles
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser.CreateUserProfile>();
+                cfg.AddProfile<Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser.GetUserProfile>();
+            });
+            _mapper = configuration.CreateMapper();
             _controller = new UsersController(_mediator, _mapper);
         }
 
@@ -66,7 +72,7 @@ namespace Ambev.DeveloperEvaluation.Unit.WebApi
 
             var apiResponse = createdResult.Value as ApiResponseWithData<CreateUserResponse>;
             apiResponse.Should().NotBeNull();
-            apiResponse!.Data.Id.Should().Be(responseDto.Id);
+            apiResponse!.Data!.Id.Should().Be(responseDto.Id);
         }
 
         [Fact(DisplayName = "CreateUser with invalid request returns 400 BadRequest")]

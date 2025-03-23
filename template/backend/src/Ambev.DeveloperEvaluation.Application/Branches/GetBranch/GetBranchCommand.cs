@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.GetBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 
 /// <summary>
 /// Command for retrieving a branch by their ID

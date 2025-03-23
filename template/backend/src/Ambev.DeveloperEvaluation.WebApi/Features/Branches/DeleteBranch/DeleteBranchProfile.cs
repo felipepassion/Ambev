@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches.DeleteBranch;
@@ -12,7 +13,7 @@ public class DeleteBranchProfile : Profile
     /// </summary>
     public DeleteBranchProfile()
     {
-        CreateMap<Guid, Application.Branchs.DeleteBranch.DeleteBranchCommand>()
-            .ConstructUsing(id => new Application.Branchs.DeleteBranch.DeleteBranchCommand(id));
+        CreateMap<Guid, DeleteBranchCommand>()
+            .ConstructUsing(id => new Application.Branches.DeleteBranch.DeleteBranchCommand(id));
     }
 }

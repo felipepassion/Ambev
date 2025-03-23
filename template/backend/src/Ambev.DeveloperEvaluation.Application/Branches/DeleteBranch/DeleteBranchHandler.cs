@@ -2,7 +2,7 @@ using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.DeleteBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
 
 /// <summary>
 /// Handler for processing DeleteBranchCommand requests

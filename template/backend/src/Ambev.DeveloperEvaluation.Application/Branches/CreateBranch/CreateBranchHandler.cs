@@ -4,7 +4,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.CreateBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 
 /// <summary>
 /// Handler for processing CreateBranchCommand requests

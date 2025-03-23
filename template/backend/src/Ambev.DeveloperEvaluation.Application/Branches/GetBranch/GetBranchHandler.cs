@@ -3,7 +3,7 @@ using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 
-namespace Ambev.DeveloperEvaluation.Application.Branchs.GetBranch;
+namespace Ambev.DeveloperEvaluation.Application.Branches.GetBranch;
 
 /// <summary>
 /// Handler for processing GetBranchCommand requests
