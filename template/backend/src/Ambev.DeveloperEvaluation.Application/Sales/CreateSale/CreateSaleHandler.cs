@@ -54,7 +54,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         // 2. Check if the branch exists
         var branch = await _branchRepository.GetByIdAsync(command.BranchId, cancellationToken);
         if (branch == null)
-            throw new InvalidOperationException($"Branch with ID '{command.BranchId}' does not exist.");
+            throw new KeyNotFoundException($"Branch with ID '{command.BranchId}' does not exist.");
 
         // 3. Create the Sale entity
         var sale = new Sale
@@ -65,7 +65,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
             BranchId = branch.Id,
             IsCancelled = false,
             CreatedAt = DateTime.UtcNow,
-            UserId = Guid.Parse(userId),
+            UserId = new Guid(userId),
             Items = []
         };
 
