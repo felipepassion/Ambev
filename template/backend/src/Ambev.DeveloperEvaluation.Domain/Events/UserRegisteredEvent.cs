@@ -1,14 +1,14 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Domain.Events
+namespace Ambev.DeveloperEvaluation.Domain.Events;
+
+public record UserRegisteredEvent : INotification
 {
-    public class UserRegisteredEvent
-    {
-        public User User { get; }
+    public User User { get; }
 
-        public UserRegisteredEvent(User user)
-        {
-            User = user;
-        }
+    public UserRegisteredEvent(User user)
+    {
+        User = user;
     }
 }
