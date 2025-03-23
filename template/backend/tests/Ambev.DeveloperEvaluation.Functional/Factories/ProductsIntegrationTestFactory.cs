@@ -27,11 +27,6 @@ public class ProductsIntegrationTestFactory : WebApplicationFactory<Program>
                 options.UseInMemoryDatabase("IntegrationTestDb-Products");
             });
 
-            services.AddControllers(options =>
-            {
-                options.Filters.Add<FakeUserFilter>();
-            });
-
             var sp = services.BuildServiceProvider();
 
             using (var scope = sp.CreateScope())

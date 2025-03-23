@@ -31,11 +31,6 @@ public class BranchesIntegrationTestFactory : WebApplicationFactory<Program>
                 options.UseInMemoryDatabase("IntegrationTestDb-Branches");
             });
 
-            services.AddControllers(options =>
-            {
-                options.Filters.Add<FakeUserFilter>();
-            });
-
             services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 
             var sp = services.BuildServiceProvider();

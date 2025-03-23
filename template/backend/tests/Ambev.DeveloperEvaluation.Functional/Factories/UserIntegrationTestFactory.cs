@@ -27,7 +27,6 @@ public class UserIntegrationTestFactory : WebApplicationFactory<Program>
                 options.UseInMemoryDatabase("IntegrationTestDb-Users");
             });
 
-
             var sp = services.BuildServiceProvider();
 
             using (var scope = sp.CreateScope())
