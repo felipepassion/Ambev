@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 /// </summary>
 /// <remarks>
 /// Validation rules include:
-/// - Name: Required, must not exceed 100 characters
+/// - Username: Required, must not exceed 100 characters
 /// </remarks>
 public class CreateBranchCommandValidator : AbstractValidator<CreateBranchCommand>
 {

@@ -107,12 +107,12 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
             var getUserResult = new GetUserResult
             {
                 Id = userId,
-                Name = "john_doe"
+                Username = "john_doe"
             };
             var responseDto = new GetUserResponse
             {
                 Id = userId,
-                Name = "john_doe"
+                Username = "john_doe"
             };
 
             _mediator.Send(getUserCommand, Arg.Any<CancellationToken>()).Returns(getUserResult);
@@ -128,7 +128,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
             var apiResponse = okResult.Value as ApiResponseWithData<GetUserResult>;
             apiResponse.Should().NotBeNull();
             apiResponse!.Data!.Id.Should().Be(userId);
-            apiResponse.Data.Name.Should().Be("john_doe");
+            apiResponse.Data.Username.Should().Be("john_doe");
         }
 
         [Fact(DisplayName = "GetUser with invalid ID returns 400 BadRequest")]
