@@ -82,12 +82,7 @@ public class SalesController : BaseController
         var command = _mapper.Map<GetSaleCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetSaleResponse>
-        {
-            Success = true,
-            Message = "Sale retrieved successfully",
-            Data = _mapper.Map<GetSaleResponse>(response)
-        });
+        return Ok(response, "Sale retrieved successfully");
     }
 
     /// <summary>

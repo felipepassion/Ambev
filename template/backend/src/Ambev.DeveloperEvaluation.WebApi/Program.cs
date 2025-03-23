@@ -19,6 +19,7 @@ public class Program
         try
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
             builder.AddDefaultLogging();
 
             Log.Logger = new LoggerConfiguration()
@@ -28,7 +29,6 @@ public class Program
                .CreateLogger();
 
             Log.Information("Starting web application");
-
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
