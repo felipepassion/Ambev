@@ -7,6 +7,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Branches.DeleteBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches;
@@ -16,6 +17,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class BranchesController : BaseController
 {
     private readonly IMediator _mediator;
