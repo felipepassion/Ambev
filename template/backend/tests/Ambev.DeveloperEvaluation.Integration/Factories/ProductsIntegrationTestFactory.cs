@@ -1,4 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Integration.Extensions;
 using Ambev.DeveloperEvaluation.Integration.Routes;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi;
@@ -22,7 +24,7 @@ public class ProductsIntegrationTestFactory : WebApplicationFactory<Program>
 
             services.AddDbContext<DefaultContext>(options =>
             {
-                options.UseInMemoryDatabase("IntegrationTestDb_Branches-Products");
+                options.UseInMemoryDatabase("IntegrationTestDb-Products");
             });
 
             services.AddControllers(options =>
@@ -35,13 +37,16 @@ public class ProductsIntegrationTestFactory : WebApplicationFactory<Program>
             using (var scope = sp.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DefaultContext>();
+                var _passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
                 context.Database.EnsureCreated();
 
                 context.Users.Add(new User
                 {
                     Id = SalesIntegrationTests.User_ID,
-                    Username = "john_doe_integration",
-                    Email = "email@email.com",
+                    Username = HttpClientExtensions.USERNAME,
+                    Email = HttpClientExtensions.USEREMAIL,
+                    Password = _passwordHasher.HashPassword(HttpClientExtensions.USERPASSWORD),
+                    Status = Domain.Enums.UserStatus.Active
                 });
                 context.Branches.Add(new Branch
                 {

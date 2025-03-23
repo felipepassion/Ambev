@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
+using Ambev.DeveloperEvaluation.Integration.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
@@ -18,8 +19,8 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
 
     public BranchesIntegrationTests(BranchesIntegrationTestFactory factory)
     {
-        // Cria client com a aplicação “subida” e DB InMemory
         _client = factory.CreateClient();
+        _client.SetAuthenticationAsync().Wait();
     }
 
     [Fact]
@@ -99,7 +100,6 @@ public class BranchesIntegrationTests : IClassFixture<BranchesIntegrationTestFac
     [Fact]
     public async Task DeleteBranch_ShouldReturn200_AndThen404WhenGet()
     {
-        // 1) Cria branch
         var createReq = new CreateBranchRequest { Name = "BranchToDelete" };
         var createResp = await _client.PostAsJsonAsync("/api/branches", createReq);
         createResp.StatusCode.Should().Be(HttpStatusCode.Created);

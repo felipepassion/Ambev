@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
+using Ambev.DeveloperEvaluation.Integration.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
@@ -18,8 +19,8 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
 
     public ProductsIntegrationTests(ProductsIntegrationTestFactory factory)
     {
-        // Cria client com a aplicação “subida” e DB InMemory
         _client = factory.CreateClient();
+        _client.SetAuthenticationAsync().Wait();
     }
 
     [Fact]
@@ -39,7 +40,6 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
         // Assert - status
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        // Lê o JSON retornado
         var apiResponse =
             await response.Content.ReadFromJsonAsync<ApiResponseWithData<CreateProductResponse>>();
         apiResponse.Should().NotBeNull();
@@ -76,7 +76,6 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
     [Fact]
     public async Task GetProduct_ShouldReturn200_WhenExists()
     {
-        // 1) Cria um produto
         var createReq = new CreateProductRequest
         {
             Name = "Test Product For Get",
@@ -90,7 +89,6 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
             await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateProductResponse>>();
         var productId = createdApiResp!.Data!.Id;
 
-        // 2) Faz GET
         var getResp = await _client.GetAsync($"/api/products/{productId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.OK);
 

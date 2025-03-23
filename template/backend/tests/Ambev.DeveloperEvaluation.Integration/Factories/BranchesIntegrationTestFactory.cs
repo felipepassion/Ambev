@@ -1,4 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Integration.Extensions;
 using Ambev.DeveloperEvaluation.Integration.Routes;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi;
@@ -6,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Ambev.DeveloperEvaluation.Integration.Factories;
 
@@ -20,9 +24,11 @@ public class BranchesIntegrationTestFactory : WebApplicationFactory<Program>
             if (descriptor != null)
                 services.Remove(descriptor);
 
+            services.AddHttpClient();
+
             services.AddDbContext<DefaultContext>(options =>
             {
-                options.UseInMemoryDatabase("IntegrationTestDb_Branches-Branches");
+                options.UseInMemoryDatabase("IntegrationTestDb-Branches");
             });
 
             services.AddControllers(options =>
@@ -30,18 +36,25 @@ public class BranchesIntegrationTestFactory : WebApplicationFactory<Program>
                 options.Filters.Add<FakeUserFilter>();
             });
 
+            services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+
             var sp = services.BuildServiceProvider();
 
             using (var scope = sp.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DefaultContext>();
+                var _passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+                var _httpClient = scope.ServiceProvider.GetRequiredService<HttpClient>();
+
                 context.Database.EnsureCreated();
 
                 context.Users.Add(new User
                 {
                     Id = SalesIntegrationTests.User_ID,
-                    Username = "john_doe_integration",
-                    Email = "email@email.com",
+                    Username = HttpClientExtensions.USERNAME,
+                    Email = HttpClientExtensions.USEREMAIL,
+                    Password = _passwordHasher.HashPassword(HttpClientExtensions.USERPASSWORD),
+                    Status = Domain.Enums.UserStatus.Active
                 });
                 context.Branches.Add(new Branch
                 {

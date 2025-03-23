@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
+using Ambev.DeveloperEvaluation.Integration.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
@@ -27,6 +28,7 @@ public class SalesIntegrationTests : IClassFixture<SalesIntegrationTestFactory>
     public SalesIntegrationTests(SalesIntegrationTestFactory factory)
     {
         _client = factory.CreateClient();
+        _client.SetAuthenticationAsync().Wait();
     }
 
     [Fact]

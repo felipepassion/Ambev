@@ -11,7 +11,6 @@ public class ProductRepositoryTests
 {
     public ProductRepository SetupInMemoryDatabase()
     {
-        // Cria um DbContext InMemory para os testes
         var options = new DbContextOptionsBuilder<DefaultContext>()
             .UseInMemoryDatabase(databaseName: $"{Guid.NewGuid()}-Db")
             .Options;

@@ -15,6 +15,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches;
 /// <summary>
 /// Controller for managing branch operations
 /// </summary>
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class BranchesController : BaseController

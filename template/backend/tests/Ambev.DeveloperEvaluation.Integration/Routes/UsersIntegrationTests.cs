@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Integration.Factories;
+﻿using Ambev.DeveloperEvaluation.Integration.Extensions;
+using Ambev.DeveloperEvaluation.Integration.Factories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
@@ -18,8 +19,8 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
 
     public UsersIntegrationTests(UserIntegrationTestFactory factory)
     {
-        // Cria um HttpClient que aponta para a aplicação "subida" via InMemory DB
         _client = factory.CreateClient();
+        _client.SetAuthenticationAsync().Wait();
     }
 
     [Fact]
@@ -42,14 +43,11 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
         // Assert - status
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        // Lê o JSON retornado
         var apiResponse =
             await response.Content.ReadFromJsonAsync<ApiResponseWithData<CreateUserResponse>>();
         apiResponse.Should().NotBeNull();
         apiResponse!.Success.Should().BeTrue();
         apiResponse.Data!.Id.Should().NotBe(Guid.Empty);
-        // Se quiser checar campo por campo:
-        //   apiResponse.Data.Username, etc.
     }
 
     [Fact]
@@ -97,7 +95,6 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
             await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateUserResponse>>();
         var userId = createdApiResp!.Data!.Id;
 
-        // 2) Faz GET
         var getResp = await _client.GetAsync($"/api/users/{userId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -107,13 +104,11 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
         getApiResp!.Success.Should().BeTrue();
         getApiResp.Data!.Id.Should().Be(userId);
         getApiResp.Data.Email.Should().Be("get_user@example.com");
-        // etc...
     }
 
     [Fact]
     public async Task GetUser_WithInvalidId_ShouldReturn400()
     {
-        // Guid.Empty => falha na request
         var resp = await _client.GetAsync($"/api/users/{Guid.Empty}");
         resp.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
@@ -121,7 +116,6 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
     [Fact]
     public async Task DeleteUser_ShouldReturn200_AndThen404WhenGet()
     {
-        
         var createReq = new CreateUserRequest
         {
             Username = "user_todelete",

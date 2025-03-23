@@ -10,7 +10,7 @@ public class FakeUserFilter : IAsyncActionFilter
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, SalesIntegrationTests.User_ID.ToString()),
-            new Claim(ClaimTypes.Name, "FakeUser")
+            new Claim(ClaimTypes.Name, "john_doe_integration")
         };
         var identity = new ClaimsIdentity(claims, "Fake");
         context.HttpContext.User = new ClaimsPrincipal(identity);
