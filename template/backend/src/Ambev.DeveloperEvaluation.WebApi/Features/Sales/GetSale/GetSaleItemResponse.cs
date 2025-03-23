@@ -1,9 +1,9 @@
-namespace Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 
 /// <summary>
-/// Response model for GetSaleItem operation
+/// Sub-response for a single item in the sale.
 /// </summary>
-public class GetSaleItemResult
+public class GetSaleItemResponse
 {
     /// <summary>
     /// Represents the unique identifier for a product. It is of type Guid, ensuring a globally unique value.

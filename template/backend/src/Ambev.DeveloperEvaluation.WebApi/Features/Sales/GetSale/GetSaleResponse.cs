@@ -8,7 +8,7 @@ public class GetSaleResponse
     /// <summary>
     /// The unique identifier of the sale.
     /// </summary>
-    public Guid SaleId { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// The total amount for the sale.
@@ -24,15 +24,4 @@ public class GetSaleResponse
     /// Optional: The collection of sale items if you want to return them.
     /// </summary>
     public List<GetSaleItemResponse>? Items { get; set; }
-}
-
-/// <summary>
-/// Sub-response for a single item in the sale.
-/// </summary>
-public class GetSaleItemResponse
-{
-    public Guid ProductId { get; set; }
-    public int Quantity { get; set; }
-    public decimal Discount { get; set; }
-    public decimal TotalItemAmount { get; set; }
 }

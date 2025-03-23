@@ -46,17 +46,9 @@ public class BranchesControllerTests
     {
         // Arrange
         var request = BranchesControllerTestData.GenerateValidCreateBranchRequest();
-        var createBranchCommand = new CreateBranchCommand { Name = request.Name };
-        var createBranchResult = new CreateBranchResult { Id = Guid.NewGuid() };
-        var createBranchResponse = new CreateBranchResponse
-        {
-            Id = createBranchResult.Id,
-            Name = request.Name
-        };
+        var createBranchResult = new CreateBranchResult { Id = Guid.NewGuid(), Name = request.Name };
 
-        _mapper.Map<CreateBranchCommand>(request).Returns(createBranchCommand);
-        _mediator.Send(createBranchCommand, Arg.Any<CancellationToken>()).Returns(createBranchResult);
-        _mapper.Map<CreateBranchResponse>(createBranchResult).Returns(createBranchResponse);
+        _mediator.Send(Arg.Any<CreateBranchCommand>(), Arg.Any<CancellationToken>()).Returns(createBranchResult);
 
         // Act
         var actionResult = await _controller.CreateBranch(request, CancellationToken.None);
@@ -160,7 +152,6 @@ public class BranchesControllerTests
         // Arrange
         var branchId = Guid.NewGuid();
         var deleteCommand = new DeleteBranchCommand(branchId);
-        _mapper.Map<DeleteBranchCommand>(branchId).Returns(deleteCommand);
 
         // Act
         var actionResult = await _controller.DeleteBranch(branchId, CancellationToken.None);

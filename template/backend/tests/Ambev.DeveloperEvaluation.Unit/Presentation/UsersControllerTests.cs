@@ -55,12 +55,13 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
                 Role = request.Role
             };
 
-            var createUserResult = new CreateUserResult { Id = Guid.NewGuid() };
-            var responseDto = new CreateUserResponse { Id = createUserResult.Id };
+            var createUserResult = new CreateUserResult { Id = Guid.NewGuid(), };
+            var responseDto = new CreateUserResponse
+            {
+                Id = createUserResult.Id,
+            };
 
-            _mapper.Map<CreateUserCommand>(request).Returns(createUserCommand);
-            _mediator.Send(createUserCommand, Arg.Any<CancellationToken>()).Returns(createUserResult);
-            _mapper.Map<CreateUserResponse>(createUserResult).Returns(responseDto);
+            _mediator.Send(Arg.Any<CreateUserCommand>(), Arg.Any<CancellationToken>()).Returns(createUserResult);
 
             // Act
             var actionResult = await _controller.CreateUser(request, CancellationToken.None);
@@ -114,9 +115,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
                 Name = "john_doe"
             };
 
-            _mapper.Map<GetUserCommand>(userId).Returns(getUserCommand);
             _mediator.Send(getUserCommand, Arg.Any<CancellationToken>()).Returns(getUserResult);
-            _mapper.Map<GetUserResponse>(getUserResult).Returns(responseDto);
 
             // Act
             var actionResult = await _controller.GetUser(userId, CancellationToken.None);
@@ -149,7 +148,6 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
             var userId = Guid.NewGuid();
             var getUserCommand = new GetUserCommand(userId);
 
-            _mapper.Map<GetUserCommand>(userId).Returns(getUserCommand);
             _mediator
                 .Send(getUserCommand, Arg.Any<CancellationToken>())
                 .Returns<Task<GetUserResult>>(x => throw new KeyNotFoundException($"User with ID {userId} not found"));
@@ -172,7 +170,6 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
             // Arrange
             var userId = Guid.NewGuid();
             var deleteUserCommand = new DeleteUserCommand(userId);
-            _mapper.Map<DeleteUserCommand>(userId).Returns(deleteUserCommand);
 
             // Act
             var actionResult = await _controller.DeleteUser(userId, CancellationToken.None);

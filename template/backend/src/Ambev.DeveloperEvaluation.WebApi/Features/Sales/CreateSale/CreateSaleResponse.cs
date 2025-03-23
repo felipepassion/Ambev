@@ -8,7 +8,7 @@ public class CreateSaleResponse
     /// <summary>
     /// The unique identifier of the newly created sale.
     /// </summary>
-    public Guid SaleId { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// The total amount for this sale, after any discounts.

@@ -1,3 +1,5 @@
+using Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem;
+
 namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 
 /// <summary>
@@ -6,22 +8,22 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 public class GetSaleResult
 {
     /// <summary>
-    /// The unique identifier of the sale
+    /// The unique identifier of the sale.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// The sale's full name
+    /// The total amount for the sale.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public decimal TotalAmount { get; set; }
 
     /// <summary>
-    /// The sale's email address
+    /// Indicates whether this sale has been cancelled.
     /// </summary>
-    public string Email { get; set; } = string.Empty;
+    public bool IsCancelled { get; set; }
 
     /// <summary>
-    /// The sale's phone number
+    /// Optional: The collection of sale items if you want to return them.
     /// </summary>
-    public string Phone { get; set; } = string.Empty;
+    public List<GetSaleItemResult> Items { get; set; } = [];
 }

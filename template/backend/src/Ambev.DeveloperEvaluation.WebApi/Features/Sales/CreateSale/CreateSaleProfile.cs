@@ -13,6 +13,7 @@ public class CreateSaleProfile : Profile
     /// </summary>
     public CreateSaleProfile()
     {
+        CreateMap<CreateSaleItemRequest, CreateSaleItemCommand>();
         CreateMap<CreateSaleRequest, CreateSaleCommand>();
         CreateMap<CreateSaleResult, CreateSaleResponse>();
     }

@@ -38,7 +38,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     /// </summary>
     /// <param name="command">The create sale command.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>The created sale details (SaleId).</returns>
+    /// <returns>The created sale details (Id).</returns>
     /// <exception cref="ValidationException">Thrown when validation fails.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the branch or product does not exist.</exception>
     public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)

@@ -6,22 +6,27 @@ namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 public class GetProductResult
 {
     /// <summary>
-    /// The unique identifier of the product
+    /// The unique identifier of the product.
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// The product's full name
+    /// The name of the product.
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// The product's email address
+    /// The optional description of the product.
     /// </summary>
-    public string Email { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     /// <summary>
-    /// The product's phone number
+    /// The unit price for the product.
     /// </summary>
-    public string Phone { get; set; } = string.Empty;
+    public decimal UnitPrice { get; set; }
+
+    /// <summary>
+    /// Indicates whether this product is active.
+    /// </summary>
+    public bool IsActive { get; set; }
 }

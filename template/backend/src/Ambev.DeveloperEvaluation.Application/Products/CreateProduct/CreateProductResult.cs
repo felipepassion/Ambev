@@ -10,8 +10,22 @@
 public class CreateProductResult
 {
     /// <summary>
-    /// Gets or sets the unique identifier of the newly created product.
+    /// The unique identifier of the newly created product.
     /// </summary>
-    /// <value>A GUID that uniquely identifies the created product in the system.</value>
     public Guid Id { get; set; }
+
+    /// <summary>
+    /// The name of the newly created product.
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The optional description of the newly created product.
+    /// </summary>
+    public string? Description { get; set; }
+
+    /// <summary>
+    /// The unit price for the newly created product.
+    /// </summary>
+    public decimal UnitPrice { get; set; }
 }
