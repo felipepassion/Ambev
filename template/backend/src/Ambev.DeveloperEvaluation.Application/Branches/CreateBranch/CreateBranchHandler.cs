@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Events;
+using Ambev.DeveloperEvaluation.Domain.Events.Branches;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -40,7 +40,6 @@ public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBr
         var createdBranch = await _branchRepository.CreateAsync(branch, cancellationToken);
         var result = _mapper.Map<CreateBranchResult>(createdBranch);
 
-        // Publish BranchCreatedEvent after successful creation
         await _mediator.Publish(new BranchCreatedEvent(createdBranch.Id, createdBranch.Name), cancellationToken);
 
         return result;

@@ -2,9 +2,9 @@
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Integration.Filters;
+using Ambev.DeveloperEvaluation.Integration.TestsData;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Presentation.TestData;
 using Ambev.DeveloperEvaluation.WebApi;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales;
@@ -20,7 +20,7 @@ using NSubstitute;
 using System.Security.Claims;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Tests.Integration
+namespace Ambev.DeveloperEvaluation.Integration.Tests
 {
     public class SalesIntegrationTests : IAsyncLifetime
     {
@@ -77,9 +77,9 @@ namespace Ambev.DeveloperEvaluation.Tests.Integration
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<Application.Sales.CreateSale.CreateSaleProfile>();
-                cfg.AddProfile<Application.Sales.GetSale.GetSaleProfile>();
+                cfg.AddProfile<GetSaleProfile>();
                 cfg.AddProfile<Application.SaleItems.GetSaleItem.GetSaleItemProfile>();
-                cfg.AddProfile<WebApi.Features.Sales.CreateSale.CreateSaleProfile>();
+                cfg.AddProfile<CreateSaleProfile>();
                 cfg.AddProfile<WebApi.Features.Sales.GetSale.GetSaleProfile>();
             });
 

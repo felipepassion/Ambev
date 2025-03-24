@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 
-namespace Ambev.DeveloperEvaluation.Unit.Presentation.TestData;
+namespace Ambev.DeveloperEvaluation.Integration.TestsData;
 
 public static class ProductsIntegrationTestData
 {

@@ -1,9 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Events;
+﻿using Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
+using Ambev.DeveloperEvaluation.Domain.Events.Branches;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Branches;
 
 /// <summary>
 /// Handler for processing DeleteBranchCommand requests.

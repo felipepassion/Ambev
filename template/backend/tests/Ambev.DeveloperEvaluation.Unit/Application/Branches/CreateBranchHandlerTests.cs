@@ -1,12 +1,13 @@
 ﻿// CreateBranchHandler.cs
+using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Branches;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Ambev.DeveloperEvaluation.Domain.Events;
 
-namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch
+namespace Ambev.DeveloperEvaluation.Unit.Application.Branches
 {
     /// <summary>
     /// Handler for processing CreateBranchCommand requests.

@@ -6,7 +6,7 @@ using MediatR;
 using NSubstitute;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Tests.Unit;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Sales;
 
 public class DeleteSaleHandlerTests
 {

@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Tests.Integration;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
 namespace Ambev.DeveloperEvaluation.Integration.Filters

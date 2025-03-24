@@ -1,14 +1,15 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
+﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
+using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 
@@ -115,5 +116,18 @@ public class UsersController : BaseController
             Success = true,
             Message = "User deleted successfully"
         });
+    }
+
+    /// <summary>
+    /// Handles HTTP GET requests to retrieve a list of users based on specified query parameters.
+    /// </summary>
+    /// <param name="query">Contains the criteria for filtering and paginating the list of users.</param>
+    /// <param name="cancellationToken">Allows the operation to be canceled if needed, providing control over long-running tasks.</param>
+    /// <returns>Returns a paginated list of users wrapped in an IActionResult.</returns>
+    [HttpGet("list")]
+    public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery query, CancellationToken cancellationToken)
+    {
+        var pagedList = await _mediator.Send(query, cancellationToken);
+        return OkPaginated(pagedList);
     }
 }

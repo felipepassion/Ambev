@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Presentation.TestData;
+namespace Ambev.DeveloperEvaluation.Integration.TestsData;
 
 public static class SalesIntegrationTestData
 {

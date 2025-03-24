@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
-namespace Ambev.DeveloperEvaluation.Unit.Presentation.TestData;
+namespace Ambev.DeveloperEvaluation.Integration.TestsData;
 
 public static class UsersIntegrationTestData
 {

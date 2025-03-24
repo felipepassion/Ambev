@@ -93,4 +93,60 @@ public class UserRepositoryTests
         var fromDb = await _context.Users.FindAsync(created.Id);
         fromDb.Should().BeNull();
     }
+
+    // Additional tests for GetAllUsersAsync in UserRepositoryTests.cs
+    [Fact(DisplayName = "GetAllUsersAsync should return correct users for the given page")]
+    public async Task GetAllUsersAsync_ShouldReturnCorrectUsersForPage()
+    {
+        // Arrange: Insert multiple users into the in-memory database
+        var users = new List<User>
+        {
+            new User { Username = "Alice", Email = "alice@example.com", Phone = "+551100000000", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+            new User { Username = "Bob", Email = "bob@example.com", Phone = "+551100000001", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+            new User { Username = "Charlie", Email = "charlie@example.com", Phone = "+551100000002", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+            new User { Username = "David", Email = "david@example.com", Phone = "+551100000003", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+            new User { Username = "Eve", Email = "eve@example.com", Phone = "+551100000004", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+            new User { Username = "Frank", Email = "frank@example.com", Phone = "+551100000005", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+        };
+
+        foreach (var user in users)
+            await _userRepository.CreateAsync(user);
+
+        // Act: Request page 1 with a page size of 3
+        var page1 = await _userRepository.GetAllUsersAsync(1, 3);
+        // And request page 2 with a page size of 3
+        var page2 = await _userRepository.GetAllUsersAsync(2, 3);
+
+        // Assert: Page 1 should contain "Alice", "Bob", "Charlie" (ordered by Username)
+        page1.Should().HaveCount(3);
+        page1[0].Username.Should().Be("Alice");
+        page1[1].Username.Should().Be("Bob");
+        page1[2].Username.Should().Be("Charlie");
+
+        // Assert: Page 2 should contain "David", "Eve", "Frank"
+        page2.Should().HaveCount(3);
+        page2[0].Username.Should().Be("David");
+        page2[1].Username.Should().Be("Eve");
+        page2[2].Username.Should().Be("Frank");
+    }
+
+    [Fact(DisplayName = "GetAllUsersAsync should return an empty list if page is out of range")]
+    public async Task GetAllUsersAsync_ShouldReturnEmptyList_ForPageOutOfRange()
+    {
+        // Arrange: Insert only 2 users
+        var users = new List<User>
+        {
+            new User { Username = "Alice", Email = "alice@example.com", Phone = "+551100000000", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+            new User { Username = "Bob", Email = "bob@example.com", Phone = "+551100000001", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
+        };
+
+        foreach (var user in users)
+            await _userRepository.CreateAsync(user);
+
+        // Act: Request page 2 with a page size of 2 (which should be out of range)
+        var page2 = await _userRepository.GetAllUsersAsync(2, 2);
+
+        // Assert: The returned list should be empty
+        page2.Should().BeEmpty();
+    }
 }

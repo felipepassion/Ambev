@@ -4,9 +4,9 @@ using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Integration.TestsData;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Presentation.TestData;
 using Ambev.DeveloperEvaluation.WebApi;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users;
@@ -25,7 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Tests.Integration;
+namespace Ambev.DeveloperEvaluation.Integration.Tests;
 
 public class UsersIntegrationTests : IAsyncLifetime
 {

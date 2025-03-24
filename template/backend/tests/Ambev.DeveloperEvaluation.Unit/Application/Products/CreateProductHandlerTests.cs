@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events.Products;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Application.TestData;
+using Ambev.DeveloperEvaluation.Unit.Application._TestData;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
@@ -10,7 +10,7 @@ using MediatR;
 using NSubstitute;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Products;
 
 /// <summary>
 /// Contains unit tests for the <see cref="CreateProductHandler"/> class.

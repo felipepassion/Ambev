@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application.TestData
+namespace Ambev.DeveloperEvaluation.Unit.Application._TestData
 {
     /// <summary>
     /// Provides methods for generating test data for CreateBranchCommand using the Bogus library.

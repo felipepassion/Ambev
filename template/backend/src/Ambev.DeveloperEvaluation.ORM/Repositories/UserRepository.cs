@@ -72,4 +72,20 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    /// <summary>
+    /// Retrieves a paginated list of users.
+    /// </summary>
+    /// <param name="page">The page number (starting at 1).</param>
+    /// <param name="pageSize">The number of users per page.</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A list of users for the requested page.</returns>
+    public async Task<List<User>> GetAllUsersAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+    {  
+        int skip = (page - 1) * pageSize;
+        return await _context.Users
+            .Skip(skip)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+    }
 }
