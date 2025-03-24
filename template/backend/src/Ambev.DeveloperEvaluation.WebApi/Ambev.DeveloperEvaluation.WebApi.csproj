@@ -29,6 +29,7 @@
 	  <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+	  <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Docs\Samples\" />
     <Folder Include="Features\Users\DeleteUser\" />
     <Folder Include="Features\Users\UpdateUser\" />
   </ItemGroup>

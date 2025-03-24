@@ -164,4 +164,37 @@ public class SaleRepositoryTests
         var fromDb = await saleRepository.GetByIdAsync(created.Id);
         fromDb.Should().BeNull();
     }
+
+    [Fact]
+    public async Task CancelAsync_ShouldRemoveSaleFromDatabase()
+    {
+        // arrange
+        var saleRepository = SetupDatabaseContext();
+        var sale = new Sale
+        {
+            SaleNumber = "SALE-CANCEL",
+            SaleDate = DateTime.UtcNow,
+            UserId = Guid.NewGuid(),
+            BranchId = Guid.NewGuid(),
+            Items = new List<SaleItem>
+            {
+                new SaleItem
+                {
+                    ProductId = Guid.NewGuid(),
+                    Quantity = 2,
+                    UnitPrice = 50.25m
+                }
+            }
+        };
+        var created = await saleRepository.CreateAsync(sale);
+
+        // act
+        var success = await saleRepository.CancelAsync(created.Id);
+
+        // assert
+        success.Should().BeTrue();
+        var fromDb = await saleRepository.GetByIdAsync(created.Id);
+        fromDb!.IsCancelled.Should().BeTrue();
+        fromDb.Should().NotBeNull();
+    }
 }

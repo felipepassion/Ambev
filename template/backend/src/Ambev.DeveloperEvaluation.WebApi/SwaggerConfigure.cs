@@ -44,7 +44,10 @@ public static class SwaggerConfigure
             {
                 Version = "v1",
                 Title = "Developer Evaluation API",
-                Description = "API for managing sales, products, users, and branches. Implements business rules for discounting based on quantity and external identity patterns.",
+                Description = @"API for managing sales, products, users, and branches. Implements business rules for discounting based on quantity and external identity patterns. <br/> <br/> <br/> 
+<b>Link Postman Test Collection: <b/> <a target='_blank' href='https://orange-meadow-3890.postman.co/workspace/My-Workspace~712ba6db-8893-4722-8a5f-f764e96900d7/collection/10408349-1d0fdc5b-e8ad-4084-82a3-5d0c01cf93f7?action=share&creator=10408349&active-environment=10408349-f1465d91-0ca4-44e7-bf43-fbb40990bc76'>Download</a>
+<br/><br/><br/> 
+<b>TESTES SWAGGER: <b/> <a target='_blank' href='https://localhost:44312/swagger/index.html'>Clique aqui para testar a API</a>",
                 Contact = new OpenApiContact
                 {
                     Name = "Felipe Paixão",

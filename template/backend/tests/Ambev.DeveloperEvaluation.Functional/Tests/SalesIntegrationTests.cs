@@ -142,4 +142,37 @@ public class SalesIntegrationTests : IClassFixture<SalesIntegrationTestFactory>
         var getResp = await _client.GetAsync($"/api/sales/{saleId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+
+    [Fact]
+    public async Task CancelSale_ShouldReturn200_AndThen404WhenGettingItAgain()
+    {
+        // 1) Create a sale
+        var createReq = new CreateSaleRequest
+        {
+            BranchId = Branch_ID,
+            Items = new List<CreateSaleItemRequest>
+            {
+                new CreateSaleItemRequest { ProductId = Product1_ID, Quantity = 4 }
+            }
+        };
+        var createResp = await _client.PostAsJsonAsync("/api/sales", createReq);
+        createResp.StatusCode.Should().Be(HttpStatusCode.Created);
+
+        var createdData =
+            await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateSaleResponse>>();
+        var saleId = createdData!.Data!.Id;
+
+        // 2) Cancel the sale
+        var delResp = await _client.DeleteAsync($"/api/sales/{saleId}/cancel");
+        delResp.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        // 3) Attempt to GET again => KeyNotFound => 404
+        var getResp = await _client.GetAsync($"/api/sales/{saleId}");
+        getResp.StatusCode.Should().Be(HttpStatusCode.OK);
+        
+        var getApiResp =
+            await getResp.Content.ReadFromJsonAsync<ApiResponseWithData<GetSaleResponse>>();
+
+        getApiResp!.Data!.IsCancelled.Should().BeTrue();
+    }
 }

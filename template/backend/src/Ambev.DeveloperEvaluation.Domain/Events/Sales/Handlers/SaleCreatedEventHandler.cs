@@ -5,6 +5,7 @@ using Serilog;
 namespace Ambev.DeveloperEvaluation.Domain.Events.Sales.Handlers;
 
 public class SaleCreatedEventHandler :
+    INotificationHandler<SaleCanceledEvent>,
     INotificationHandler<SaleCreatedEvent>,
     INotificationHandler<SaleDeletedEvent>,
     INotificationHandler<SaleItemCreatedEvent>,
@@ -37,6 +38,12 @@ public class SaleCreatedEventHandler :
     }
 
     public Task Handle(SaleDeletedEvent notification, CancellationToken cancellationToken)
+    {
+        Log.Information("{SaleId}", notification);
+        return Task.CompletedTask;
+    }
+
+    public Task Handle(SaleCanceledEvent notification, CancellationToken cancellationToken)
     {
         Log.Information("{SaleId}", notification);
         return Task.CompletedTask;

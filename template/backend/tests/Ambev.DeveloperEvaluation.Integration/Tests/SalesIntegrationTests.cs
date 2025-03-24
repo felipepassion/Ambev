@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Integration.Filters;
 using Ambev.DeveloperEvaluation.Integration.TestsData;
@@ -295,6 +296,68 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
         {
             // Act
             var actionResult = await _controller.DeleteSale(Guid.Empty, CancellationToken.None);
+
+            // Assert
+            var badRequest = actionResult as BadRequestObjectResult;
+            badRequest.Should().NotBeNull();
+            badRequest!.StatusCode.Should().Be(400);
+        }
+
+        [Fact(DisplayName = "CancelSale returns 200 and subsequent checks IsCanceled")]
+        public async Task CancelSale_ReturnsOkAndThenCheckIsCanceled()
+        {
+            // Arrange
+            var createReq = SalesIntegrationTestData.GenerateValidCreateSaleRequest();
+
+            _mockBranchRepo.GetByIdAsync(createReq.BranchId, Arg.Any<CancellationToken>())
+                .Returns(new Domain.Entities.Branch
+                {
+                    Id = createReq.BranchId,
+                    Name = "Mock Branch"
+                });
+            foreach (var item in createReq.Items)
+            {
+                _mockProductRepo.GetByIdAsync(item.ProductId, Arg.Any<CancellationToken>())
+                    .Returns(new Domain.Entities.Product
+                    {
+                        Id = item.ProductId,
+                        Name = "Mock Product",
+                        UnitPrice = 10m
+                    });
+            }
+
+            var createActionResult = await _controller.CreateSale(createReq, CancellationToken.None);
+            var createdResult = createActionResult as CreatedResult;
+            createdResult.Should().NotBeNull();
+            var createdApiResponse = createdResult!.Value as ApiResponseWithData<CreateSaleResponse>;
+            var saleId = createdApiResponse!.Data!.Id;
+
+            // Act
+            var cancelActionResult = await _controller.CancelSale(saleId, CancellationToken.None);
+
+            // Assert
+            var okCancelResult = cancelActionResult as OkObjectResult;
+            okCancelResult.Should().NotBeNull();
+            okCancelResult!.StatusCode.Should().Be(200);
+
+            // Act
+            var getActionResult = await _controller.GetSale(saleId, CancellationToken.None);
+
+            // Assert
+            var okResult = getActionResult as OkObjectResult;
+            okResult.Should().NotBeNull();
+            okResult!.StatusCode.Should().Be(200);
+
+            var getApiResponse = okResult.Value as ApiResponseWithData<GetSaleResponse>;
+            getApiResponse.Should().NotBeNull();
+            getApiResponse!.Data!.IsCancelled.Should().BeTrue();
+        }
+
+        [Fact(DisplayName = "CancelSale with invalid ID returns 400 BadRequest")]
+        public async Task CancelSale_InvalidId_ReturnsBadRequest()
+        {
+            // Act
+            var actionResult = await _controller.CancelSale(Guid.Empty, CancellationToken.None);
 
             // Assert
             var badRequest = actionResult as BadRequestObjectResult;

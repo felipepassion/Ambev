@@ -55,4 +55,12 @@ public interface ISaleRepository
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>True if the sale was deleted, false if not found.</returns>
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Cancels an operation identified by a unique identifier asynchronously.
+    /// </summary>
+    /// <param name="id">The unique identifier for the operation to be canceled.</param>
+    /// <param name="cancellationToken">Used to signal cancellation of the operation if needed.</param>
+    /// <returns>Returns a task that represents the asynchronous operation, with a boolean indicating success or failure.</returns>
+    Task<bool> CancelAsync(Guid id, CancellationToken cancellationToken = default);
 }

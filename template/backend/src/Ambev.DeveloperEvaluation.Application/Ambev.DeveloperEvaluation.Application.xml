@@ -463,6 +463,62 @@
             Represents the total amount of all items. It is a decimal value that can be used for financial calculations.
             </summary>
         </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleCommand">
+            <summary>
+            Command for deleting a sale
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleCommand.Id">
+            <summary>
+            The unique identifier of the sale to cancel
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of CancelSaleCommand
+            </summary>
+            <param name="id">The ID of the sale to cancel</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleHandler">
+            <summary>
+            Handler for processing CancelSaleCommand requests.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleHandler.#ctor(Ambev.DeveloperEvaluation.Domain.Repositories.ISaleRepository,MediatR.IMediator)">
+            <summary>
+            Initializes a new instance of CancelSaleHandler.
+            </summary>
+            <param name="saleRepository">The sale repository.</param>
+            <param name="mediator">The MediatR mediator instance.</param>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleHandler.Handle(Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleCommand,System.Threading.CancellationToken)">
+            <summary>
+            Handles the CancelSaleCommand request.
+            </summary>
+            <param name="request">The CancelSale command.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The result of the cancel operation.</returns>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleResponse">
+            <summary>
+            Response model for CancelSale operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleResponse.Success">
+            <summary>
+            Indicates whether the deletion was successful
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleValidator">
+            <summary>
+            Validator for CancelSaleCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CancelSale.CancelSaleValidator.#ctor">
+            <summary>
+            Initializes validation rules for CancelSaleCommand
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand" -->
         <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand.BranchId">
             <summary>

@@ -112,4 +112,22 @@ public class SaleRepository : ISaleRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    /// <summary>
+    /// Cancels a sale by setting the IsCancelled property to true.
+    /// </summary>
+    /// <param name="id">The unique identifier of the sale to delete.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>True if the sale was deleted, false if not found.</returns>
+    public async Task<bool> CancelAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var sale = await GetByIdAsync(id, cancellationToken);
+        if (sale == null)
+            return false;
+
+        sale.IsCancelled = true;
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return true;
+    }
 }
