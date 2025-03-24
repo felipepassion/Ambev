@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/9b886617-680a-4809-86a3-7946bef9d91f)## 🔍 Swagger API Explorer
+## 🔍 Swagger API Explorer
 
 Explore a RESTful interface for the Developer Evaluation API via Swagger Redoc. The interface categorizes endpoints for clarity, offering grouped access to core business operations like user management, sales tracking, product listing, branch registration, and authentication.
 
@@ -55,7 +55,7 @@ Each route includes validation error handling with structured responses for 400/
 Manages sales records, including creation, retrieval, and cancellation. Applies quantity-based discount business rules automatically during sale creation.
 
 📸 *Sales endpoints with HTTP verbs*  
-![Sales endpoints with HTTP verbs]
+![Sales endpoints with HTTP verbs](https://github.com/user-attachments/assets/37ab09a3-5786-4192-94b2-bcf6d5e09cb0)
 
 ![image](https://github.com/user-attachments/assets/323c267b-adc7-4512-b81e-1ac79c6e0454)
 
