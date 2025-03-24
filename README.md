@@ -11,6 +11,22 @@ The Swagger UI provides a sidebar menu where endpoints are grouped by domain con
 
 ![image]
 
+---
+
+### 🔐 Authentication
+
+Handles token-based user authentication via credential submission.
+
+📸 *Authentication endpoint using POST method*  
+![image](https://github.com/user-attachments/assets/055a0360-b844-4123-a896-044eedd5b92f)
+
+![Authentication endpoint using POST method](https://github.com/user-attachments/assets/a6c93c7f-1133-4d3d-8f9f-1973745c25bf)
+
+![image](https://github.com/user-attachments/assets/c033f035-381e-4062-985b-22d656d83db9)
+
+
+
+- **POST /api/auth/login** – Authenticates a user and returns a JWT token if credentials are valid.
 
 ---
 
@@ -85,23 +101,6 @@ Manages the product catalog and supports listing, creation, and removal.
 - **DELETE /api/products/{id}** – Deletes a product.
 
 Follows the same validation pattern as branches and users.
-
----
-
-### 🔐 Authentication
-
-Handles token-based user authentication via credential submission.
-
-📸 *Authentication endpoint using POST method*  
-![image](https://github.com/user-attachments/assets/055a0360-b844-4123-a896-044eedd5b92f)
-
-![Authentication endpoint using POST method](https://github.com/user-attachments/assets/a6c93c7f-1133-4d3d-8f9f-1973745c25bf)
-
-![image](https://github.com/user-attachments/assets/c033f035-381e-4062-985b-22d656d83db9)
-
-
-
-- **POST /api/auth/login** – Authenticates a user and returns a JWT token if credentials are valid.
 
 ---
 
