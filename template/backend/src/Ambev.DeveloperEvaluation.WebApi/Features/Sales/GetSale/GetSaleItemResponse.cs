@@ -11,6 +11,11 @@ public class GetSaleItemResponse
     public Guid ProductId { get; set; }
 
     /// <summary>
+    /// Gets or sets the unit price of the product at the time of the sale.
+    /// </summary>
+    public decimal UnitPrice { get; set; }
+
+    /// <summary>
     /// Represents the quantity of an item. It can be both retrieved and modified.
     /// </summary>
     public int Quantity { get; set; }

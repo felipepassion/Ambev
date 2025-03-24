@@ -16,6 +16,11 @@ public class GetSaleItemResult
     public int Quantity { get; set; }
 
     /// <summary>
+    /// Gets or sets the unit price of the product at the time of the sale.
+    /// </summary>
+    public decimal UnitPrice { get; set; }
+
+    /// <summary>
     /// Represents the discount amount as a decimal value. It can be both retrieved and set.
     /// </summary>
     public decimal Discount { get; set; }

@@ -117,6 +117,7 @@ public class SalesControllerTests
                     ProductId = Guid.NewGuid(),
                     Quantity = 5,
                     Discount = 0.1m,
+                    UnitPrice = 10,
                     TotalItemAmount = 45m
                 }
             }
@@ -131,6 +132,7 @@ public class SalesControllerTests
                 new GetSaleItemResponse
                 {
                     ProductId = getSaleResult.Items[0].ProductId,
+                    UnitPrice = 10,
                     Quantity = 5,
                     Discount = 0.1m,
                     TotalItemAmount = 45m
