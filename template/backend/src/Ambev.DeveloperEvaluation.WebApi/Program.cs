@@ -70,7 +70,7 @@ public class Program
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseBasicHealthChecks();
 
             app.MapControllers();

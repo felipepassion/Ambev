@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Pokemon.Api.Controllers
 {
@@ -9,6 +7,8 @@ namespace Pokemon.Api.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class DocsController : Controller
     {
+        [HttpGet("/")]
+        [HttpGet("/docs")]
         public IActionResult Index()
         {
             return View();
