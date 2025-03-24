@@ -140,4 +140,44 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
         var getResp = await _client.GetAsync($"/api/users/{userId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+
+    [Fact(DisplayName = "GET /api/users/list returns paginated response with expected data")]
+    public async Task GetUsersList_ReturnsPaginatedResponse()
+    {
+        // arrange: set the page number and size (based on seeded data in the factory)
+        int pageNumber = 1;
+        int pageSize = 3;
+        string requestUri = $"/api/users/list?pageNumber={pageNumber}&pageSize={pageSize}";
+
+        // act: send GET request to the list endpoint
+        var response = await _client.GetAsync(requestUri);
+
+        // assert: ensure response is successful and returns expected paginated data
+        response.EnsureSuccessStatusCode();
+        var paginatedResponse = await response.Content.ReadFromJsonAsync<ApiResponseWithData<PaginatedResponse<GetUserResponse>>>();
+        paginatedResponse.Should().NotBeNull();
+        paginatedResponse!.Success.Should().BeTrue();
+        paginatedResponse!.Data!.CurrentPage.Should().Be(pageNumber);
+        paginatedResponse.Data.Data.Should().HaveCount(pageSize);
+        paginatedResponse.Data.TotalCount.Should().BeGreaterThanOrEqualTo(6); // based on seeded additional users
+        paginatedResponse.Data.TotalPages.Should().BeGreaterThan(1);
+    }
+
+    [Fact(DisplayName = "GET /api/users/list returns empty list for out-of-range page")]
+    public async Task GetUsersList_OutOfRange_ReturnsEmptyList()
+    {
+        // arrange: use a page number out of range (assuming seeded data is less than (pageNumber - 1) * pageSize)
+        int pageNumber = 100;
+        int pageSize = 3;
+        string requestUri = $"/api/users/list?pageNumber={pageNumber}&pageSize={pageSize}";
+
+        // act: send GET request to the endpoint
+        var response = await _client.GetAsync(requestUri);
+
+        // assert: ensure response is successful and returns an empty list
+        response.EnsureSuccessStatusCode();
+        var paginatedResponse = await response.Content.ReadFromJsonAsync<ApiResponseWithData<PaginatedResponse<GetUserResponse>>>();
+        paginatedResponse.Should().NotBeNull();
+        paginatedResponse!.Data!.Data.Should().BeEmpty();
+    }
 }
