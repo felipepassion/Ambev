@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Products;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -7,48 +8,44 @@ using MediatR;
 namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 
 /// <summary>
-/// Handler for processing CreateProductCommand requests
+/// Handler for processing CreateProductCommand requests.
+/// Validates the command, creates a new product, persists it, and publishes a ProductCreatedEvent.
 /// </summary>
 public class CreateProductHandler : IRequestHandler<CreateProductCommand, CreateProductResult>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    /// <summary>
-    /// Initializes a new instance of CreateProductHandler
-    /// </summary>
-    /// <param name="productRepository">The product repository</param>
-    /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for CreateProductCommand</param>
-    public CreateProductHandler(IProductRepository productRepository, IMapper mapper)
+    public CreateProductHandler(
+        IMapper mapper,
+        IMediator mediator,
+        IProductRepository productRepository)
     {
-        _productRepository = productRepository;
         _mapper = mapper;
+        _mediator = mediator;
+        _productRepository = productRepository;
     }
 
-    /// <summary>
-    /// Handles the CreateProductCommand request
-    /// </summary>
-    /// <param name="command">The CreateProduct command</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created product details</returns>
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
         var validator = new CreateProductCommandValidator();
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-
-        var existingProduct = await _productRepository.GetByNameAsync(command.Name, cancellationToken);
-        if (existingProduct != null)
-            throw new InvalidOperationException($"Product with name {command.Name} already exists");
 
         var product = _mapper.Map<Product>(command);
 
         var createdProduct = await _productRepository.CreateAsync(product, cancellationToken);
-        var result = _mapper.Map<CreateProductResult>(createdProduct);
 
-        return result;
+        var productCreatedEvent = new ProductCreatedEvent(
+            createdProduct.Id,
+            createdProduct.Name,
+            createdProduct.Description,
+            createdProduct.UnitPrice
+        );
+        await _mediator.Publish(productCreatedEvent, cancellationToken);
+
+        return _mapper.Map<CreateProductResult>(createdProduct);
     }
 }

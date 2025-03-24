@@ -1,10 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Products;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
+using MediatR;
 using NSubstitute;
 using Xunit;
 
@@ -18,12 +20,15 @@ public class CreateProductHandlerTests
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
     private readonly CreateProductHandler _handler;
+    private readonly IMediator _mediator;
 
     public CreateProductHandlerTests()
     {
         _productRepository = Substitute.For<IProductRepository>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new CreateProductHandler(_productRepository, _mapper);
+        _mediator = Substitute.For<IMediator>();
+
+        _handler = new CreateProductHandler(_mapper, _mediator, _productRepository);
     }
 
     [Fact(DisplayName = "Given valid product data When creating product Then returns success response")]
@@ -91,5 +96,44 @@ public class CreateProductHandlerTests
             c.Name == command.Name &&
             c.Description == command.Description &&
             c.UnitPrice == command.UnitPrice));
+    }
+
+    [Fact(DisplayName = "CreateProductHandler: valid command returns created product ID and publishes ProductCreatedEvent")]
+    public async Task Handle_ValidCommand_PublishesProductCreatedEvent()
+    {
+        // Arrange
+        var command = new CreateProductCommand
+        {
+            Name = "Test Product",
+            Description = "Test Description",
+            UnitPrice = 100m
+        };
+
+        var productEntity = new Product
+        {
+            Id = Guid.NewGuid(),
+            Name = command.Name,
+            Description = command.Description,
+            UnitPrice = command.UnitPrice
+        };
+
+        _mapper.Map<Product>(command).Returns(productEntity);
+        _productRepository.CreateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(productEntity));
+
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Id.Should().Be(productEntity.Id);
+        // Verify that the ProductCreatedEvent is published with the correct product details
+        await _mediator.Received(1)
+            .Publish(Arg.Is<ProductCreatedEvent>(e =>
+                e.ProductId == productEntity.Id &&
+                e.Name == productEntity.Name &&
+                e.Description == productEntity.Description &&
+                e.UnitPrice == productEntity.UnitPrice
+            ), Arg.Any<CancellationToken>());
     }
 }
