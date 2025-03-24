@@ -3,6 +3,7 @@ using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.Events.Users;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
@@ -24,7 +25,6 @@ public class Program
 
             Log.Logger = new LoggerConfiguration()
                .Enrich.FromLogContext()
-               .WriteTo.Console()
                .WriteTo.Seq(builder.Configuration["SERILOG_SEQ_URL"]!)
                .CreateLogger();
 
@@ -51,6 +51,7 @@ public class Program
             builder.Services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssemblies(
+                    typeof(DomainLayer).Assembly,
                     typeof(ApplicationLayer).Assembly,
                     typeof(Program).Assembly
                 );
@@ -67,7 +68,6 @@ public class Program
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
 
             app.UseHttpsRedirection();
 
