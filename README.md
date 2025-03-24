@@ -116,8 +116,13 @@ The application uses **Serilog + Seq** for structured logging of key events such
 ![image](https://github.com/user-attachments/assets/0774d56b-39e8-4b09-b4b4-50804bf452ef)
 
 
+## Postman collection 
+![image](https://github.com/user-attachments/assets/31aa2bf6-56bf-4875-beb5-61b36e88fded)
+
+
 Example logs:
 ```text
 BranchCreatedEvent { BranchId = ..., Name = "BranchToDelete" }
 SaleCreatedEvent { SaleId = ..., Total = 199.99 }
 ProductDeletedEvent { ProductId = ..., Name = "Product X" }
+´´´text
