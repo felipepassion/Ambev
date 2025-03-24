@@ -1,6 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
 using FluentAssertions;
@@ -11,22 +10,22 @@ namespace Ambev.DeveloperEvaluation.Unit.Infra.Repositories;
 
 public class UserRepositoryTests
 {
-    private readonly IUserRepository _userRepository;
-    private readonly DefaultContext _context;
-
-    public UserRepositoryTests()
+    private UserRepository CreateScopedRepository()
     {
+        var randomId = Guid.NewGuid().ToString().Split("-")[0];
         var options = new DbContextOptionsBuilder<DefaultContext>()
-            .UseInMemoryDatabase(databaseName: $"{nameof(UserRepositoryTests)}Db")
-            .Options;
+                    .UseInMemoryDatabase(databaseName: $"{nameof(UserRepositoryTests)}-{randomId}-Db")
+                    .Options;
 
-        _context = new DefaultContext(options);
-        _userRepository = new UserRepository(_context);
+        var _context = new DefaultContext(options);
+        
+        return new UserRepository(_context);
     }
 
     [Fact]
     public async Task CreateAsync_ShouldAddUserToDatabase()
     {
+        var _userRepository = CreateScopedRepository();
         var user = new User
         {
             Username = "John Doe",
@@ -42,7 +41,7 @@ public class UserRepositoryTests
         created.Should().NotBeNull();
         created.Id.Should().NotBe(Guid.Empty);
 
-        var fromDb = await _context.Users.FindAsync(created.Id);
+        var fromDb = await _userRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.Email.Should().Be("john.doe@example.com");
     }
@@ -50,6 +49,7 @@ public class UserRepositoryTests
     [Fact]
     public async Task GetByIdAsync_ShouldReturnNull_IfUserDoesNotExist()
     {
+        var _userRepository = CreateScopedRepository();
         var result = await _userRepository.GetByIdAsync(Guid.NewGuid());
         result.Should().BeNull();
     }
@@ -57,6 +57,7 @@ public class UserRepositoryTests
     [Fact]
     public async Task GetByEmailAsync_ShouldReturnCorrectUser()
     {
+        var _userRepository = CreateScopedRepository();
         var user = new User
         {
             Username = "Jane Doe",
@@ -76,6 +77,7 @@ public class UserRepositoryTests
     [Fact]
     public async Task DeleteAsync_ShouldRemoveUserFromDatabase()
     {
+        var _userRepository = CreateScopedRepository();
         var user = new User
         {
             Username = "Delete",
@@ -90,7 +92,7 @@ public class UserRepositoryTests
         var success = await _userRepository.DeleteAsync(created.Id);
         success.Should().BeTrue();
 
-        var fromDb = await _context.Users.FindAsync(created.Id);
+        var fromDb = await _userRepository.GetByIdAsync(created.Id);
         fromDb.Should().BeNull();
     }
 
@@ -98,6 +100,8 @@ public class UserRepositoryTests
     [Fact(DisplayName = "GetAllUsersAsync should return correct users for the given page")]
     public async Task GetAllUsersAsync_ShouldReturnCorrectUsersForPage()
     {
+        var _userRepository = CreateScopedRepository();
+
         // Arrange: Insert multiple users into the in-memory database
         var users = new List<User>
         {
@@ -112,9 +116,7 @@ public class UserRepositoryTests
         foreach (var user in users)
             await _userRepository.CreateAsync(user);
 
-        // Act: Request page 1 with a page size of 3
         var page1 = await _userRepository.GetAllUsersAsync(1, 3);
-        // And request page 2 with a page size of 3
         var page2 = await _userRepository.GetAllUsersAsync(2, 3);
 
         // Assert: Page 1 should contain "Alice", "Bob", "Charlie" (ordered by Username)
@@ -133,6 +135,8 @@ public class UserRepositoryTests
     [Fact(DisplayName = "GetAllUsersAsync should return an empty list if page is out of range")]
     public async Task GetAllUsersAsync_ShouldReturnEmptyList_ForPageOutOfRange()
     {
+        var _userRepository = CreateScopedRepository();
+
         // Arrange: Insert only 2 users
         var users = new List<User>
         {

@@ -83,8 +83,9 @@ public class ProductsController : BaseController
 
         var command = _mapper.Map<GetProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
+        var mappedResponse = _mapper.Map<GetProductResponse>(response);
 
-        return Ok(response, "Product retrieved successfully");
+        return Ok(mappedResponse, "Product retrieved successfully");
 
     }
 

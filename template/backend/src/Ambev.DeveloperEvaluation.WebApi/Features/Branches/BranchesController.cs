@@ -83,8 +83,9 @@ public class BranchesController : BaseController
 
         var command = _mapper.Map<GetBranchCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
+        var mappedResponse = _mapper.Map<GetBranchResponse>(response);
 
-        return Ok(response, "Branch retrieved successfully");
+        return Ok(mappedResponse, "Branch retrieved successfully");
     }
 
     /// <summary>

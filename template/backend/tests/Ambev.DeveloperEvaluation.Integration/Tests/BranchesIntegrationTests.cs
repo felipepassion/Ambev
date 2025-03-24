@@ -8,6 +8,7 @@ using Ambev.DeveloperEvaluation.WebApi;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches;
 using Ambev.DeveloperEvaluation.WebApi.Features.Branches.CreateBranch;
+using Ambev.DeveloperEvaluation.WebApi.Features.Branches.GetBranch;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
@@ -44,8 +45,8 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
 
             services.AddAutoMapper(cfg =>
             {
-                cfg.AddProfile<GetBranchProfile>();
-                cfg.AddProfile<CreateBranchProfile>();
+                cfg.AddProfile<Application.Branches.GetBranch.GetBranchProfile>();
+                cfg.AddProfile<WebApi.Features.Branches.CreateBranch.CreateBranchProfile>();
                 cfg.AddProfile<Application.Branches.CreateBranch.CreateBranchProfile>();
                 cfg.AddProfile<WebApi.Features.Branches.GetBranch.GetBranchProfile>();
             });
@@ -137,7 +138,7 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 
-            var getApiResponse = okResult.Value as ApiResponseWithData<GetBranchResult>;
+            var getApiResponse = okResult.Value as ApiResponseWithData<GetBranchResponse>;
             getApiResponse.Should().NotBeNull();
             getApiResponse!.Data!.Id.Should().Be(branchId);
             getApiResponse.Data.Name.Should().Be(createRequest.Name);

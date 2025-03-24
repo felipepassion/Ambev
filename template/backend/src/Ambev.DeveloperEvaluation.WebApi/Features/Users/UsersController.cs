@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
+using Ambev.DeveloperEvaluation.Application.Users.GetUsers;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
@@ -85,7 +86,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<GetUserCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(response, "User retrieved successfully");
+        return Ok(_mapper.Map<GetUserResponse>(response), "User retrieved successfully");
     }
 
     /// <summary>
@@ -127,7 +128,8 @@ public class UsersController : BaseController
     [HttpGet("list")]
     public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery query, CancellationToken cancellationToken)
     {
-        var pagedList = await _mediator.Send(query, cancellationToken);
-        return OkPaginated(pagedList);
+        var pagedList = await _mediator.Send(new GetUsersCommand(query.PageNumber, query.PageSize), cancellationToken);
+        var responseList = _mapper.Map<List<GetUserResponse>>(pagedList);
+        return OkPaginated(new PaginatedList<GetUserResponse>(responseList, 20, query.PageNumber, query.PageSize));
     }
 }

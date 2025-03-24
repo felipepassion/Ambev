@@ -106,7 +106,7 @@ public class BranchesControllerTests
         okResult.Should().NotBeNull();
         okResult!.StatusCode.Should().Be(200);
 
-        var apiResponse = okResult.Value as ApiResponseWithData<GetBranchResult>;
+        var apiResponse = okResult.Value as ApiResponseWithData<GetBranchResponse>;
         apiResponse.Should().NotBeNull();
         apiResponse!.Data!.Id.Should().Be(branchId);
         apiResponse.Data.Name.Should().Be("Test Branch");

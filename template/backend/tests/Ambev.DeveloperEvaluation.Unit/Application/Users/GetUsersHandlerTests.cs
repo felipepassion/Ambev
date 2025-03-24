@@ -7,7 +7,7 @@ using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Tests.Unit.Application.Users;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
 
 /// <summary>
 /// Contains unit tests for the <see cref="GetUsersHandler"/> class.

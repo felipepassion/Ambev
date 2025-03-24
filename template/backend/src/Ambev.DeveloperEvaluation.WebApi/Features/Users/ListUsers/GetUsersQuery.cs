@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 /// <summary>
 /// Query for retrieving a paginated list of users.
 /// </summary>
-public class GetUsersQuery : IRequest<PaginatedList<GetUserResponse>>
+public class GetUsersQuery
 {
     /// <summary>
     /// The page number to retrieve.

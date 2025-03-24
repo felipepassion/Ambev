@@ -9,6 +9,7 @@ using Ambev.DeveloperEvaluation.WebApi;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
@@ -77,9 +78,9 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<Application.Sales.CreateSale.CreateSaleProfile>();
-                cfg.AddProfile<GetSaleProfile>();
+                cfg.AddProfile<Application.Sales.GetSale.GetSaleProfile>();
                 cfg.AddProfile<Application.SaleItems.GetSaleItem.GetSaleItemProfile>();
-                cfg.AddProfile<CreateSaleProfile>();
+                cfg.AddProfile<WebApi.Features.Sales.CreateSale.CreateSaleProfile>();
                 cfg.AddProfile<WebApi.Features.Sales.GetSale.GetSaleProfile>();
             });
 
@@ -194,7 +195,7 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 
-            var getApiResponse = okResult.Value as ApiResponseWithData<GetSaleResult>;
+            var getApiResponse = okResult.Value as ApiResponseWithData<GetSaleResponse>;
             getApiResponse.Should().NotBeNull();
             getApiResponse!.Data!.Id.Should().Be(saleId);
         }

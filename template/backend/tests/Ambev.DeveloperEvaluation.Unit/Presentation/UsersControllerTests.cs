@@ -125,7 +125,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Presentation
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 
-            var apiResponse = okResult.Value as ApiResponseWithData<GetUserResult>;
+            var apiResponse = okResult.Value as ApiResponseWithData<GetUserResponse>;
             apiResponse.Should().NotBeNull();
             apiResponse!.Data!.Id.Should().Be(userId);
             apiResponse.Data.Username.Should().Be("john_doe");

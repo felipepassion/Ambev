@@ -1,7 +1,8 @@
 ﻿// GetUsersProfile.cs
-using AutoMapper;
+using Ambev.DeveloperEvaluation.Application.Users.GetUsers;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 
@@ -13,5 +14,6 @@ public class GetUsersProfile : Profile
     public GetUsersProfile()
     {
         CreateMap<User, GetUserResponse>();
+        CreateMap<GetUsersQuery, GetUsersCommand>();
     }
 }

@@ -8,6 +8,7 @@ using Ambev.DeveloperEvaluation.WebApi;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
@@ -44,8 +45,8 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
 
             services.AddAutoMapper(cfg =>
             {
-                cfg.AddProfile<GetProductProfile>();
-                cfg.AddProfile<CreateProductProfile>();
+                cfg.AddProfile<Application.Products.GetProduct.GetProductProfile>();
+                cfg.AddProfile<WebApi.Features.Products.CreateProduct.CreateProductProfile>();
                 cfg.AddProfile<Application.Products.CreateProduct.CreateProductProfile>();
                 cfg.AddProfile<WebApi.Features.Products.GetProduct.GetProductProfile>();
             });
@@ -137,7 +138,7 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
             okResult.Should().NotBeNull();
             okResult!.StatusCode.Should().Be(200);
 
-            var getApiResponse = okResult.Value as ApiResponseWithData<GetProductResult>;
+            var getApiResponse = okResult.Value as ApiResponseWithData<GetProductResponse>;
             getApiResponse.Should().NotBeNull();
             getApiResponse!.Data!.Id.Should().Be(productId);
             getApiResponse.Data.Name.Should().Be(createRequest.Name);

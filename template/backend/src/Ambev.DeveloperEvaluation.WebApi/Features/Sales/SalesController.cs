@@ -83,8 +83,8 @@ public class SalesController : BaseController
 
         var command = _mapper.Map<GetSaleCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
-
-        return Ok(response, "Sale retrieved successfully");
+        var mappedResponse = _mapper.Map<GetSaleResponse>(response);
+        return Ok(mappedResponse, "Sale retrieved successfully");
     }
 
     /// <summary>

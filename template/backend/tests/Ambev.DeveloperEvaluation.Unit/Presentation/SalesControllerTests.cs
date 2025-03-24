@@ -148,7 +148,7 @@ public class SalesControllerTests
         okResult.Should().NotBeNull();
         okResult!.StatusCode.Should().Be(200);
 
-        var apiResponse = okResult.Value as ApiResponseWithData<GetSaleResult>;
+        var apiResponse = okResult.Value as ApiResponseWithData<GetSaleResponse>;
         apiResponse.Should().NotBeNull();
         apiResponse!.Data!.Id.Should().Be(saleId);
         apiResponse.Data.Items.Should().HaveCount(1);

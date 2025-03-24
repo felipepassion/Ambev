@@ -134,7 +134,7 @@ public class ProductsControllerTests
         okResult.Should().NotBeNull();
         okResult!.StatusCode.Should().Be(200);
 
-        var apiResponse = okResult.Value as ApiResponseWithData<GetProductResult>;
+        var apiResponse = okResult.Value as ApiResponseWithData<GetProductResponse>;
         apiResponse.Should().NotBeNull();
         apiResponse!.Data!.Id.Should().Be(productId);
         apiResponse.Data.Name.Should().Be("Test Product");
