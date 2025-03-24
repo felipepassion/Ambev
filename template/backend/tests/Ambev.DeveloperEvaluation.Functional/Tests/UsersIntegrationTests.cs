@@ -57,9 +57,9 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
         var invalidReq = new CreateUserRequest
         {
             Username = "",     // required => invalid
-            Password = "abc",  // vai falhar no password validator (se houver)
+            Password = "abc",
             Email = "invalid_email_format",
-            Phone = "123",     // deve falhar na regex
+            Phone = "123",
             Status = Domain.Enums.UserStatus.Unknown,
             Role = Domain.Enums.UserRole.None
         };
@@ -78,7 +78,7 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
     [Fact]
     public async Task GetUser_ShouldReturn200_WhenExists()
     {
-        
+
         var createReq = new CreateUserRequest
         {
             Username = "getuser_integration",
@@ -132,11 +132,11 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
             await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateUserResponse>>();
         var userId = createdData!.Data!.Id;
 
-       
+
         var delResp = await _client.DeleteAsync($"/api/users/{userId}");
         delResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        
+
         var getResp = await _client.GetAsync($"/api/users/{userId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
@@ -154,13 +154,13 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
 
         // assert: ensure response is successful and returns expected paginated data
         response.EnsureSuccessStatusCode();
-        var paginatedResponse = await response.Content.ReadFromJsonAsync<ApiResponseWithData<PaginatedResponse<GetUserResponse>>>();
+        var paginatedResponse = await response.Content.ReadFromJsonAsync<PaginatedResponse<GetUserResponse>>();
         paginatedResponse.Should().NotBeNull();
         paginatedResponse!.Success.Should().BeTrue();
-        paginatedResponse!.Data!.CurrentPage.Should().Be(pageNumber);
-        paginatedResponse.Data.Data.Should().HaveCount(pageSize);
-        paginatedResponse.Data.TotalCount.Should().BeGreaterThanOrEqualTo(6); // based on seeded additional users
-        paginatedResponse.Data.TotalPages.Should().BeGreaterThan(1);
+        paginatedResponse!.CurrentPage.Should().Be(pageNumber);
+        paginatedResponse.Data.Should().HaveCount(pageSize);
+        paginatedResponse.TotalCount.Should().BeGreaterThanOrEqualTo(6); // based on seeded additional users
+        paginatedResponse.TotalPages.Should().BeGreaterThan(1);
     }
 
     [Fact(DisplayName = "GET /api/users/list returns empty list for out-of-range page")]
@@ -176,8 +176,8 @@ public class UsersIntegrationTests : IClassFixture<UserIntegrationTestFactory>
 
         // assert: ensure response is successful and returns an empty list
         response.EnsureSuccessStatusCode();
-        var paginatedResponse = await response.Content.ReadFromJsonAsync<ApiResponseWithData<PaginatedResponse<GetUserResponse>>>();
+        var paginatedResponse = await response.Content.ReadFromJsonAsync<PaginatedResponse<GetUserResponse>>();
         paginatedResponse.Should().NotBeNull();
-        paginatedResponse!.Data!.Data.Should().BeEmpty();
+        paginatedResponse!.Data.Should().BeEmpty();
     }
 }

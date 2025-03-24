@@ -224,11 +224,11 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
 
-            var paginatedResponse = okResult.Value as ApiResponseWithData<PaginatedResponse<GetUserResponse>>;
+            var paginatedResponse = okResult.Value as PaginatedResponse<GetUserResponse>;
             paginatedResponse.Should().NotBeNull();
-            paginatedResponse.Data!.Data.Should().NotBeNull();
-            paginatedResponse.Data.Data.Should().HaveCount(2);
-            paginatedResponse.Data.TotalCount.Should().BeGreaterThanOrEqualTo(userRequests.Count);
+            paginatedResponse!.Data.Should().NotBeNull();
+            paginatedResponse.Data.Should().HaveCount(2);
+            paginatedResponse.TotalCount.Should().BeGreaterThanOrEqualTo(userRequests.Count);
         }
     }
 }
