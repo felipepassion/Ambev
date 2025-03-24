@@ -9,6 +9,8 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Branches;
 
@@ -42,7 +44,7 @@ public class BranchesController : BaseController
     /// <returns>The created branch details</returns>
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateBranchResponse>), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request, CancellationToken cancellationToken)
     {
         var validator = new CreateBranchRequestValidator();
@@ -70,8 +72,8 @@ public class BranchesController : BaseController
     /// <returns>The branch details if found</returns>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResponseWithData<GetBranchResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBranch([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var request = new GetBranchRequest { Id = id };
@@ -95,9 +97,8 @@ public class BranchesController : BaseController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Success response if the branch was deleted</returns>
     [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(IActionResult))]
+    [SwaggerResponse((int)HttpStatusCode.BadRequest, "BadRequest", typeof(IActionResult))]
     public async Task<IActionResult> DeleteBranch([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var request = new DeleteBranchRequest { Id = id };

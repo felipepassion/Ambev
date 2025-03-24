@@ -109,8 +109,8 @@ public class ValidationExceptionMiddleware
         {
             Success = false,
             Message = "Validation Failed",
-            Errors = exception.Errors
-                .Select(error => (ValidationErrorDetail)error)
+            //Errors = exception.Errors
+              //  .Select(error => (ValidationErrorDetail)error).ToList()
         };
 
         var jsonOptions = new JsonSerializerOptions

@@ -34,8 +34,8 @@ public class Program
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddHttpContextAccessor();
             builder.AddBasicHealthChecks();
-            builder.Services.AddSwaggerGen();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSwaggerSetup(builder.Configuration);
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(
@@ -64,11 +64,7 @@ public class Program
 
             app.UseDeveloperExceptionPage();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwaggerSetup(builder.Configuration);
 
             app.UseHttpsRedirection();
 

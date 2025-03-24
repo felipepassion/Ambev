@@ -1,0 +1,945 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ambev.DeveloperEvaluation.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Ambev.DeveloperEvaluation.Application.ApplicationLayer">
+            <summary>
+            Represents the application layer of the system.
+            </summary>
+            <remarks>
+            This class serves as a reference for other layers when they need to access 
+            or reference the assembly of the application layer. The assembly can be 
+            retrieved using <c>typeof(ApplicationLayer).Assembly</c>, which allows 
+            other layers to programmatically reference the application layer's assembly.
+            </remarks>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserCommand">
+            <summary>
+            Command for authenticating a user in the system.
+            Implements IRequest for mediator pattern handling.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserCommand.Email">
+            <summary>
+            Gets or sets the email address for authentication.
+            Used as the primary identifier for the user.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserCommand.Password">
+            <summary>
+            Gets or sets the password for authentication.
+            Will be verified against the stored hashed password.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserProfile">
+            <summary>
+            AutoMapper profile for authentication-related mappings
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserProfile.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserProfile"/> class
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult">
+            <summary>
+            Represents the response after authenticating a user
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult.Token">
+            <summary>
+            Gets or sets the authentication token
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult.Id">
+            <summary>
+            Gets or sets the user's unique identifier
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult.Name">
+            <summary>
+            Gets or sets the user's name
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult.Email">
+            <summary>
+            Gets or sets the user's email address
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult.Phone">
+            <summary>
+            Gets or sets the user's phone number
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser.AuthenticateUserResult.Role">
+            <summary>
+            Gets or sets the user's role
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchCommand">
+            <summary>
+            Command for creating a new branch.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchCommand.Name">
+            <summary>
+            Gets or sets the name for the branch.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchHandler">
+            <summary>
+            Handler for processing CreateBranchCommand requests.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchProfile">
+            <summary>
+            Profile for mapping between Branch entity and CreateBranchResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchProfile.#ctor">
+            <summary>
+            Initializes the mappings for CreateBranch operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchResult">
+            <summary>
+            Represents the response returned after successfully creating a new branch.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchResult.Id">
+            <summary>
+            Gets or sets the unique identifier of the newly created branch.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchResult.Name">
+            <summary>
+            Gets or sets the name of the newly created branch.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchCommandValidator">
+            <summary>
+            Validator for <see cref="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchCommand"/>, defining validation rules for branch creation.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchCommandValidator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Ambev.DeveloperEvaluation.Application.Branches.CreateBranch.CreateBranchCommandValidator"/> class.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchCommand">
+            <summary>
+            Command for deleting a branch
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchCommand.Id">
+            <summary>
+            The unique identifier of the branch to delete
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of DeleteBranchCommand
+            </summary>
+            <param name="id">The ID of the branch to delete</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchHandler">
+            <summary>
+            Handler for processing DeleteBranchCommand requests.
+            Validates the command, deletes the branch, and publishes a BranchDeletedEvent.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchResponse">
+            <summary>
+            Response model for DeleteBranch operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchResponse.Success">
+            <summary>
+            Indicates whether the deletion was successful
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchValidator">
+            <summary>
+            Validator for DeleteBranchCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.DeleteBranch.DeleteBranchValidator.#ctor">
+            <summary>
+            Initializes validation rules for DeleteBranchCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchCommand">
+            <summary>
+            Command for retrieving a branch by their ID
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchCommand.Id">
+            <summary>
+            The unique identifier of the branch to retrieve
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of GetBranchCommand
+            </summary>
+            <param name="id">The ID of the branch to retrieve</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchHandler">
+            <summary>
+            Handler for processing GetBranchCommand requests.
+            Validates the command, retrieves the branch, and publishes a BranchRetrievedEvent.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchProfile">
+            <summary>
+            Profile for mapping between Branch entity and GetBranchResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchProfile.#ctor">
+            <summary>
+            Initializes the mappings for GetBranch operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchResult">
+            <summary>
+            Represents the response after successfully retrieving a branch.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchResult.Id">
+            <summary>
+            Gets or sets the unique identifier of the branch.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchResult.Name">
+            <summary>
+            Gets or sets the name of the branch.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchResult.IsActive">
+            <summary>
+            Indicates whether the branch is currently active.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchValidator">
+            <summary>
+            Validator for GetBranchCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Branches.GetBranch.GetBranchValidator.#ctor">
+            <summary>
+            Initializes validation rules for GetBranchCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommand">
+            <summary>
+            Command for creating a new Product.
+            </summary>
+            <remarks>
+            This command captures data for product creation, including name, description,
+            and unit price. It returns a <see cref="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductResult"/>.
+            </remarks>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommand.Name">
+            <summary>
+            Gets or sets the product name.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommand.Description">
+            <summary>
+            Gets or sets the product description.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommand.UnitPrice">
+            <summary>
+            Gets or sets the unit price for the product.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductHandler">
+            <summary>
+            Handler for processing CreateProductCommand requests.
+            Validates the command, creates a new product, persists it, and publishes a ProductCreatedEvent.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductProfile">
+            <summary>
+            Profile for mapping between Product entity and CreateProductResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductProfile.#ctor">
+            <summary>
+            Initializes the mappings for CreateProduct operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductResult">
+            <summary>
+            Represents the response returned after successfully creating a new product.
+            </summary>
+            <remarks>
+            This response contains the unique identifier of the newly created product,
+            which can be used for subsequent operations or reference.
+            </remarks>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductResult.Id">
+            <summary>
+            The unique identifier of the newly created product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductResult.Name">
+            <summary>
+            The name of the newly created product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductResult.Description">
+            <summary>
+            The optional description of the newly created product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductResult.UnitPrice">
+            <summary>
+            The unit price for the newly created product.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommandValidator">
+            <summary>
+            Validator for <see cref="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommand"/>, defining validation rules for product creation.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommandValidator.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Ambev.DeveloperEvaluation.Application.Products.CreateProduct.CreateProductCommandValidator"/> with custom rules.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductCommand">
+            <summary>
+            Command for deleting a product
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductCommand.Id">
+            <summary>
+            The unique identifier of the product to delete
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of DeleteProductCommand
+            </summary>
+            <param name="id">The ID of the product to delete</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductHandler">
+            <summary>
+            Handler for processing DeleteProductCommand requests.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductResponse">
+            <summary>
+            Response model for DeleteProduct operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductResponse.Success">
+            <summary>
+            Indicates whether the deletion was successful
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductValidator">
+            <summary>
+            Validator for DeleteProductCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.DeleteProduct.DeleteProductValidator.#ctor">
+            <summary>
+            Initializes validation rules for DeleteProductCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductCommand">
+            <summary>
+            Command for retrieving a product by their ID
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductCommand.Id">
+            <summary>
+            The unique identifier of the product to retrieve
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of GetProductCommand
+            </summary>
+            <param name="id">The ID of the product to retrieve</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductHandler">
+            <summary>
+            Handler for processing GetProductCommand requests.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductProfile">
+            <summary>
+            Profile for mapping between Product entity and GetProductResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductProfile.#ctor">
+            <summary>
+            Initializes the mappings for GetProduct operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductResult">
+            <summary>
+            Response model for GetProduct operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductResult.Id">
+            <summary>
+            The unique identifier of the product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductResult.Name">
+            <summary>
+            The name of the product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductResult.Description">
+            <summary>
+            The optional description of the product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductResult.UnitPrice">
+            <summary>
+            The unit price for the product.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductResult.IsActive">
+            <summary>
+            Indicates whether this product is active.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductValidator">
+            <summary>
+            Validator for GetProductCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Products.GetProduct.GetProductValidator.#ctor">
+            <summary>
+            Initializes validation rules for GetProductCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemProfile">
+            <summary>
+            Profile for mapping between SaleItem entity and GetSaleItemResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemProfile.#ctor">
+            <summary>
+            Initializes the mappings for GetSaleItem operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemResult">
+            <summary>
+            Response model for GetSaleItem operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemResult.ProductId">
+            <summary>
+            Represents the unique identifier for a product. It is of type Guid, ensuring a globally unique value.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemResult.Quantity">
+            <summary>
+            Represents the quantity of an item. It can be both retrieved and modified.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemResult.UnitPrice">
+            <summary>
+            Gets or sets the unit price of the product at the time of the sale.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemResult.Discount">
+            <summary>
+            Represents the discount amount as a decimal value. It can be both retrieved and set.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.SaleItems.GetSaleItem.GetSaleItemResult.TotalItemAmount">
+            <summary>
+            Represents the total amount of all items. It is a decimal value that can be used for financial calculations.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand" -->
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand.BranchId">
+            <summary>
+            Gets or sets the branch identifier responsible for this sale.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand.Items">
+            <summary>
+            Gets or sets a collection of items to be purchased in this sale.
+            Each item should specify at least the product identifier and the quantity.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand.Validate">
+            <summary>
+            Performs validation on this command using <see cref="T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommandValidator"/>.
+            </summary>
+            <returns>A <see cref="T:Ambev.DeveloperEvaluation.Common.Validation.ValidationResultDetail"/> containing validation results.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleItemCommand" -->
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleItemCommand.ProductId">
+            <summary>
+            Gets or sets the product identifier for this sale item.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleItemCommand.Quantity">
+            <summary>
+            Gets or sets the quantity of this product to be purchased.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleProfile">
+            <summary>
+            Profile for mapping between Sale entity and CreateSaleResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleProfile.#ctor">
+            <summary>
+            Initializes the mappings for CreateSale operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleResult">
+            <summary>
+            Represents the response returned after successfully creating a new sale.
+            </summary>
+            <remarks>
+            This response contains the unique identifier of the newly created sale,
+            which can be used for subsequent operations or reference.
+            </remarks>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleResult.Id">
+            <summary>
+            Gets or sets the unique identifier of the newly created sale.
+            </summary>
+            <value>A GUID that uniquely identifies the created sale in the system.</value>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleResult.TotalAmount">
+            <summary>
+            The total amount for this sale, after any discounts.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommandValidator">
+            <summary>
+            Validator for <see cref="T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommand"/> that defines basic validation rules for creating a sale.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommandValidator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Ambev.DeveloperEvaluation.Application.Sales.CreateSale.CreateSaleCommandValidator"/> class.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleCommand">
+            <summary>
+            Command for deleting a sale
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleCommand.Id">
+            <summary>
+            The unique identifier of the sale to delete
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of DeleteSaleCommand
+            </summary>
+            <param name="id">The ID of the sale to delete</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleHandler">
+            <summary>
+            Handler for processing DeleteSaleCommand requests.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleHandler.#ctor(Ambev.DeveloperEvaluation.Domain.Repositories.ISaleRepository,MediatR.IMediator)">
+            <summary>
+            Initializes a new instance of DeleteSaleHandler.
+            </summary>
+            <param name="saleRepository">The sale repository.</param>
+            <param name="mediator">The MediatR mediator instance.</param>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleHandler.Handle(Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleCommand,System.Threading.CancellationToken)">
+            <summary>
+            Handles the DeleteSaleCommand request.
+            </summary>
+            <param name="request">The DeleteSale command.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The result of the delete operation.</returns>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleResponse">
+            <summary>
+            Response model for DeleteSale operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleResponse.Success">
+            <summary>
+            Indicates whether the deletion was successful
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleValidator">
+            <summary>
+            Validator for DeleteSaleCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.DeleteSale.DeleteSaleValidator.#ctor">
+            <summary>
+            Initializes validation rules for DeleteSaleCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleCommand">
+            <summary>
+            Command for retrieving a sale by their ID
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleCommand.Id">
+            <summary>
+            The unique identifier of the sale to retrieve
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of GetSaleCommand
+            </summary>
+            <param name="id">The ID of the sale to retrieve</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleHandler">
+            <summary>
+            Handler for processing GetSaleCommand requests.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleHandler.#ctor(Ambev.DeveloperEvaluation.Domain.Repositories.ISaleRepository,AutoMapper.IMapper,MediatR.IMediator)">
+            <summary>
+            Initializes a new instance of GetSaleHandler.
+            </summary>
+            <param name="saleRepository">The sale repository.</param>
+            <param name="mapper">The AutoMapper instance.</param>
+            <param name="mediator">The MediatR mediator instance.</param>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleHandler.Handle(Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleCommand,System.Threading.CancellationToken)">
+            <summary>
+            Handles the GetSaleCommand request.
+            </summary>
+            <param name="request">The GetSale command.</param>
+            <param name="cancellationToken">Cancellation token.</param>
+            <returns>The sale details if found.</returns>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleProfile">
+            <summary>
+            Profile for mapping between Sale entity and GetSaleResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleProfile.#ctor">
+            <summary>
+            Initializes the mappings for GetSale operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult">
+            <summary>
+            Response model for GetSale operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.Id">
+            <summary>
+            The unique identifier of the sale.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.UserId">
+            <summary>
+            Gets or sets the user identifier associated with the sale.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.SaleNumber">
+            <summary>
+            Gets or sets the unique sale number.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.SaleDate">
+            <summary>
+            Gets or sets the date and time when the sale occurred.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.TotalAmount">
+            <summary>
+            The total amount for the sale.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.IsCancelled">
+            <summary>
+            Indicates whether this sale has been cancelled.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleResult.Items">
+            <summary>
+            Optional: The collection of sale items if you want to return them.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleValidator">
+            <summary>
+            Validator for GetSaleCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Sales.GetSale.GetSaleValidator.#ctor">
+            <summary>
+            Initializes validation rules for GetSaleCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand">
+            <summary>
+            Command for creating a new user.
+            </summary>
+            <remarks>
+            This command is used to capture the required data for creating a user, 
+            including username, password, phone number, email, status, and role. 
+            It implements <see cref="T:MediatR.IRequest`1"/> to initiate the request 
+            that returns a <see cref="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult"/>.
+            
+            The data provided in this command is validated using the 
+            <see cref="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommandValidator"/> which extends 
+            <see cref="!:AbstractValidator&lt;T&gt;"/> to ensure that the fields are correctly 
+            populated and follow the required rules.
+            </remarks>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand.Username">
+            <summary>
+            Gets or sets the username of the user to be created.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand.Password">
+            <summary>
+            Gets or sets the password for the user.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand.Phone">
+            <summary>
+            Gets or sets the phone number for the user.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand.Email">
+            <summary>
+            Gets or sets the email address for the user.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand.Status">
+            <summary>
+            Gets or sets the status of the user.
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommand.Role">
+            <summary>
+            Gets or sets the role of the user.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserHandler">
+            <summary>
+            Handler for processing CreateUserCommand requests.
+            Validates the command, creates a new user, persists it, and publishes a UserCreatedEvent.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserProfile">
+            <summary>
+            Profile for mapping between User entity and CreateUserResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserProfile.#ctor">
+            <summary>
+            Initializes the mappings for CreateUser operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult">
+            <summary>
+            Represents the response returned after successfully creating a new user.
+            </summary>
+            <remarks>
+            This response contains the unique identifier of the newly created user,
+            which can be used for subsequent operations or reference.
+            </remarks>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult.Id">
+            <summary>
+            Gets or sets the unique identifier of the newly created user.
+            </summary>
+            <value>A GUID that uniquely identifies the created user in the system.</value>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult.Username">
+            <summary>
+            The user's full name
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult.Email">
+            <summary>
+            The user's email address
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult.Phone">
+            <summary>
+            The user's phone number
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult.Role">
+            <summary>
+            The user's role in the system
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserResult.Status">
+            <summary>
+            The current status of the user
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommandValidator">
+            <summary>
+            Validator for CreateUserCommand that defines validation rules for user creation command.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.CreateUser.CreateUserCommandValidator.#ctor">
+            <summary>
+            Initializes a new instance of the CreateUserCommandValidator with defined validation rules.
+            </summary>
+            <remarks>
+            Validation rules include:
+            - Email: Must be in valid format (using EmailValidator)
+            - Username: Required, must be between 3 and 50 characters
+            - Password: Must meet security requirements (using PasswordValidator)
+            - Phone: Must match international format (+X XXXXXXXXXX)
+            - Status: Cannot be set to Unknown
+            - Role: Cannot be set to None
+            </remarks>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserCommand">
+            <summary>
+            Command for deleting a user
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserCommand.Id">
+            <summary>
+            The unique identifier of the user to delete
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of DeleteUserCommand
+            </summary>
+            <param name="id">The ID of the user to delete</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserHandler">
+            <summary>
+            Handler for processing DeleteUserCommand requests.
+            Validates the command, deletes the user, and publishes a UserDeletedEvent.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserResponse">
+            <summary>
+            Response model for DeleteUser operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserResponse.Success">
+            <summary>
+            Indicates whether the deletion was successful
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserValidator">
+            <summary>
+            Validator for DeleteUserCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.DeleteUser.DeleteUserValidator.#ctor">
+            <summary>
+            Initializes validation rules for DeleteUserCommand
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUsers.GetUsersCommand">
+            <summary>
+            Command for retrieving a paginated list of users.
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.GetUsers.GetUsersCommand.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Command for retrieving a paginated list of users.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUsers.GetUsersHandler">
+            <summary>
+            Handler for processing GetUsersCommand requests.
+            Retrieves a paginated list of users and maps them to the application DTO.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserCommand">
+            <summary>
+            Command for retrieving a user by their ID
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserCommand.Id">
+            <summary>
+            The unique identifier of the user to retrieve
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserCommand.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of GetUserCommand
+            </summary>
+            <param name="id">The ID of the user to retrieve</param>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserHandler">
+            <summary>
+            Handler for processing GetUserCommand requests.
+            Validates the command, retrieves the user, and publishes a UserRetrievedEvent.
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserProfile">
+            <summary>
+            Profile for mapping between User entity and GetUserResponse
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserProfile.#ctor">
+            <summary>
+            Initializes the mappings for GetUser operation
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult">
+            <summary>
+            Response model for GetUser operation
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult.Id">
+            <summary>
+            The unique identifier of the user
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult.Username">
+            <summary>
+            The user's full name
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult.Email">
+            <summary>
+            The user's email address
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult.Phone">
+            <summary>
+            The user's phone number
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult.Role">
+            <summary>
+            The user's role in the system
+            </summary>
+        </member>
+        <member name="P:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserResult.Status">
+            <summary>
+            The current status of the user
+            </summary>
+        </member>
+        <member name="T:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserValidator">
+            <summary>
+            Validator for GetUserCommand
+            </summary>
+        </member>
+        <member name="M:Ambev.DeveloperEvaluation.Application.Users.GetUser.GetUserValidator.#ctor">
+            <summary>
+            Initializes validation rules for GetUserCommand
+            </summary>
+        </member>
+    </members>
+</doc>
