@@ -9,8 +9,6 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 
 /// <summary>
 /// Handler for processing CreateBranchCommand requests.
-/// Validates the command, checks for branch uniqueness, creates a new branch,
-/// persists it, and publishes a BranchCreatedEvent.
 /// </summary>
 public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBranchResult>
 {

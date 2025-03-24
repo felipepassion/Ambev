@@ -5,10 +5,6 @@ namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
 /// <summary>
 /// Validator for <see cref="CreateBranchCommand"/>, defining validation rules for branch creation.
 /// </summary>
-/// <remarks>
-/// Validation rules include:
-/// - Username: Required, must not exceed 100 characters
-/// </remarks>
 public class CreateBranchCommandValidator : AbstractValidator<CreateBranchCommand>
 {
     /// <summary>

@@ -13,6 +13,21 @@ public class GetSaleResult
     public Guid Id { get; set; }
 
     /// <summary>
+    /// Gets or sets the user identifier associated with the sale.
+    /// </summary>
+    public Guid UserId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique sale number.
+    /// </summary>
+    public string SaleNumber { get; set; } = default!;
+
+    /// <summary>
+    /// Gets or sets the date and time when the sale occurred.
+    /// </summary>
+    public DateTime SaleDate { get; set; }
+
+    /// <summary>
     /// The total amount for the sale.
     /// </summary>
     public decimal TotalAmount { get; set; }

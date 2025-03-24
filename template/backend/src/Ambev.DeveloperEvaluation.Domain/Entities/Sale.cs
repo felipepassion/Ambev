@@ -60,7 +60,8 @@ public class Sale : BaseEntity
     public required virtual List<SaleItem> Items { get; set; }
 
     /// <summary>
-    /// 
+    /// Represents a branch associated with the object. It is a virtual property, allowing for overriding in derived
+    /// classes.
     /// </summary>
     public virtual Branch Branch { get; set; } = default!;
 

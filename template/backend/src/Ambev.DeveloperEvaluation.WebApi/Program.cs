@@ -35,6 +35,7 @@ public class Program
             builder.Services.AddHttpContextAccessor();
             builder.AddBasicHealthChecks();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(

@@ -12,18 +12,17 @@ public class SaleItemRepositoryTests
     private SaleItemRepository SetupDatabaseContext()
     {
         var options = new DbContextOptionsBuilder<DefaultContext>()
-                        .UseInMemoryDatabase(databaseName: $"{Guid.NewGuid()}-Db")
-                        .Options;
-
-        var _context = new DefaultContext(options);
-        return new SaleItemRepository(_context);
+            .UseInMemoryDatabase(databaseName: $"{Guid.NewGuid()}-Db")
+            .Options;
+        var context = new DefaultContext(options);
+        return new SaleItemRepository(context);
     }
 
     [Fact]
     public async Task CreateAsync_ShouldAddSaleItemToDatabase()
     {
-        var _saleItemRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleItemRepository = SetupDatabaseContext();
         var saleItem = new SaleItem
         {
             SaleId = Guid.NewGuid(),
@@ -34,12 +33,13 @@ public class SaleItemRepositoryTests
             TotalItemAmount = 45m
         };
 
-        var created = await _saleItemRepository.CreateAsync(saleItem);
+        // act
+        var created = await saleItemRepository.CreateAsync(saleItem);
 
+        // assert
         created.Should().NotBeNull();
         created.Id.Should().NotBe(Guid.Empty);
-
-        var fromDb = await _saleItemRepository.GetByIdAsync(created.Id);
+        var fromDb = await saleItemRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.Quantity.Should().Be(5);
         fromDb.Discount.Should().Be(0.1m);
@@ -49,8 +49,8 @@ public class SaleItemRepositoryTests
     [Fact]
     public async Task UpdateAsync_ShouldUpdateSaleItemInDatabase()
     {
-        var _saleItemRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleItemRepository = SetupDatabaseContext();
         var saleItem = new SaleItem
         {
             SaleId = Guid.NewGuid(),
@@ -60,20 +60,19 @@ public class SaleItemRepositoryTests
             Discount = 0m,
             TotalItemAmount = 30m
         };
+        var created = await saleItemRepository.CreateAsync(saleItem);
 
-        var created = await _saleItemRepository.CreateAsync(saleItem);
-
+        // act
         created.Quantity = 3;
         created.Discount = 0.2m;
         created.TotalItemAmount = 36m;
+        var updated = await saleItemRepository.UpdateAsync(created);
 
-        var updated = await _saleItemRepository.UpdateAsync(created);
-
+        // assert
         updated.Quantity.Should().Be(3);
         updated.Discount.Should().Be(0.2m);
         updated.TotalItemAmount.Should().Be(36m);
-
-        var fromDb = await _saleItemRepository.GetByIdAsync(created.Id);
+        var fromDb = await saleItemRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.Quantity.Should().Be(3);
     }
@@ -81,8 +80,8 @@ public class SaleItemRepositoryTests
     [Fact]
     public async Task GetByIdAsync_ShouldReturnCorrectSaleItem()
     {
-        var _saleItemRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleItemRepository = SetupDatabaseContext();
         var saleItem = new SaleItem
         {
             SaleId = Guid.NewGuid(),
@@ -92,10 +91,12 @@ public class SaleItemRepositoryTests
             Discount = 0m,
             TotalItemAmount = 100m
         };
+        var created = await saleItemRepository.CreateAsync(saleItem);
 
-        var created = await _saleItemRepository.CreateAsync(saleItem);
+        // act
+        var fetched = await saleItemRepository.GetByIdAsync(created.Id);
 
-        var fetched = await _saleItemRepository.GetByIdAsync(created.Id);
+        // assert
         fetched.Should().NotBeNull();
         fetched!.UnitPrice.Should().Be(100m);
         fetched.Quantity.Should().Be(1);
@@ -104,13 +105,12 @@ public class SaleItemRepositoryTests
     [Fact]
     public async Task GetBySaleIdAsync_ShouldReturnAllItemsForASale()
     {
-        var _saleItemRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleItemRepository = SetupDatabaseContext();
         var saleId = Guid.NewGuid();
-
         for (int i = 1; i <= 3; i++)
         {
-            await _saleItemRepository.CreateAsync(new SaleItem
+            await saleItemRepository.CreateAsync(new SaleItem
             {
                 SaleId = saleId,
                 ProductId = Guid.NewGuid(),
@@ -121,7 +121,10 @@ public class SaleItemRepositoryTests
             });
         }
 
-        var items = await _saleItemRepository.GetBySaleIdAsync(saleId);
+        // act
+        var items = await saleItemRepository.GetBySaleIdAsync(saleId);
+
+        // assert
         items.Should().HaveCount(3);
         items.Select(x => x.Quantity).Should().BeEquivalentTo(new[] { 1, 2, 3 });
     }
@@ -129,8 +132,8 @@ public class SaleItemRepositoryTests
     [Fact]
     public async Task DeleteAsync_ShouldRemoveSaleItemFromDatabase()
     {
-        var _saleItemRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleItemRepository = SetupDatabaseContext();
         var saleItem = new SaleItem
         {
             SaleId = Guid.NewGuid(),
@@ -139,13 +142,14 @@ public class SaleItemRepositoryTests
             UnitPrice = 20m,
             TotalItemAmount = 40m
         };
+        var created = await saleItemRepository.CreateAsync(saleItem);
 
-        var created = await _saleItemRepository.CreateAsync(saleItem);
+        // act
+        var success = await saleItemRepository.DeleteAsync(created.Id);
 
-        var success = await _saleItemRepository.DeleteAsync(created.Id);
+        // assert
         success.Should().BeTrue();
-
-        var fromDb = await _saleItemRepository.GetByIdAsync(created.Id);
+        var fromDb = await saleItemRepository.GetByIdAsync(created.Id);
         fromDb.Should().BeNull();
     }
 }

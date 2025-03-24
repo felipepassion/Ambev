@@ -10,10 +10,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 /// This command is used to capture the minimum data required for creating a sale,
 /// including which branch is responsible for the sale (BranchId) and
 /// a list of items (each contains the product and the quantity).
-/// 
-/// The actual unit price and any discount logic should be retrieved and applied
-/// within the handler (or domain) based on the product ID and business rules.
-/// </remarks>
 public class CreateSaleCommand : IRequest<CreateSaleResult>
 {
     /// <summary>

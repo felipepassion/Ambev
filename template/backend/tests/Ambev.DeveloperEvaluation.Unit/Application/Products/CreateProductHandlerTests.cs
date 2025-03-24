@@ -129,6 +129,7 @@ public class CreateProductHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(productEntity.Id);
+
         // Verify that the ProductCreatedEvent is published with the correct product details
         await _mediator.Received(1)
             .Publish(Arg.Is<ProductCreatedEvent>(e =>

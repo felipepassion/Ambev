@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 
 /// <summary>
@@ -19,6 +21,22 @@ public class GetSaleResponse
     /// Indicates whether this sale has been cancelled.
     /// </summary>
     public bool IsCancelled { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user identifier associated with the sale.
+    /// </summary>
+    [JsonPropertyName("customerId")]
+    public required Guid UserId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique sale number.
+    /// </summary>
+    public required string SaleNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the date and time when the sale occurred.
+    /// </summary>
+    public required DateTime SaleDate { get; set; }
 
     /// <summary>
     /// Optional: The collection of sale items if you want to return them.

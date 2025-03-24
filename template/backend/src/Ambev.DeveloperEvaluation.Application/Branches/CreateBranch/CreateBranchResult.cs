@@ -3,10 +3,6 @@
 /// <summary>
 /// Represents the response returned after successfully creating a new branch.
 /// </summary>
-/// <remarks>
-/// This response contains the unique identifier of the newly created branch,
-/// which can be used for subsequent operations or reference.
-/// </remarks>
 public class CreateBranchResult
 {
     /// <summary>

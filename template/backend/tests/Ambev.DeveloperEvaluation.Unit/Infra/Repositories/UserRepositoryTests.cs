@@ -16,16 +16,15 @@ public class UserRepositoryTests
         var options = new DbContextOptionsBuilder<DefaultContext>()
                     .UseInMemoryDatabase(databaseName: $"{nameof(UserRepositoryTests)}-{randomId}-Db")
                     .Options;
-
-        var _context = new DefaultContext(options);
-        
-        return new UserRepository(_context);
+        var context = new DefaultContext(options);
+        return new UserRepository(context);
     }
 
     [Fact]
     public async Task CreateAsync_ShouldAddUserToDatabase()
     {
-        var _userRepository = CreateScopedRepository();
+        // arrange
+        var userRepository = CreateScopedRepository();
         var user = new User
         {
             Username = "John Doe",
@@ -36,12 +35,13 @@ public class UserRepositoryTests
             Status = UserStatus.Active
         };
 
-        var created = await _userRepository.CreateAsync(user);
+        // act
+        var created = await userRepository.CreateAsync(user);
 
+        // assert
         created.Should().NotBeNull();
         created.Id.Should().NotBe(Guid.Empty);
-
-        var fromDb = await _userRepository.GetByIdAsync(created.Id);
+        var fromDb = await userRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.Email.Should().Be("john.doe@example.com");
     }
@@ -49,15 +49,21 @@ public class UserRepositoryTests
     [Fact]
     public async Task GetByIdAsync_ShouldReturnNull_IfUserDoesNotExist()
     {
-        var _userRepository = CreateScopedRepository();
-        var result = await _userRepository.GetByIdAsync(Guid.NewGuid());
+        // arrange
+        var userRepository = CreateScopedRepository();
+
+        // act
+        var result = await userRepository.GetByIdAsync(Guid.NewGuid());
+
+        // assert
         result.Should().BeNull();
     }
 
     [Fact]
     public async Task GetByEmailAsync_ShouldReturnCorrectUser()
     {
-        var _userRepository = CreateScopedRepository();
+        // arrange
+        var userRepository = CreateScopedRepository();
         var user = new User
         {
             Username = "Jane Doe",
@@ -67,9 +73,12 @@ public class UserRepositoryTests
             Role = UserRole.Customer,
             Status = UserStatus.Active
         };
-        await _userRepository.CreateAsync(user);
+        await userRepository.CreateAsync(user);
 
-        var fetched = await _userRepository.GetByEmailAsync("jane.doe@example.com");
+        // act
+        var fetched = await userRepository.GetByEmailAsync("jane.doe@example.com");
+
+        // assert
         fetched.Should().NotBeNull();
         fetched!.Username.Should().Be("Jane Doe");
     }
@@ -77,7 +86,8 @@ public class UserRepositoryTests
     [Fact]
     public async Task DeleteAsync_ShouldRemoveUserFromDatabase()
     {
-        var _userRepository = CreateScopedRepository();
+        // arrange
+        var userRepository = CreateScopedRepository();
         var user = new User
         {
             Username = "Delete",
@@ -87,22 +97,22 @@ public class UserRepositoryTests
             Role = UserRole.Customer,
             Status = UserStatus.Active
         };
-        var created = await _userRepository.CreateAsync(user);
+        var created = await userRepository.CreateAsync(user);
 
-        var success = await _userRepository.DeleteAsync(created.Id);
+        // act
+        var success = await userRepository.DeleteAsync(created.Id);
+
+        // assert
         success.Should().BeTrue();
-
-        var fromDb = await _userRepository.GetByIdAsync(created.Id);
+        var fromDb = await userRepository.GetByIdAsync(created.Id);
         fromDb.Should().BeNull();
     }
 
-    // Additional tests for GetAllUsersAsync in UserRepositoryTests.cs
     [Fact(DisplayName = "GetAllUsersAsync should return correct users for the given page")]
     public async Task GetAllUsersAsync_ShouldReturnCorrectUsersForPage()
     {
-        var _userRepository = CreateScopedRepository();
-
-        // Arrange: Insert multiple users into the in-memory database
+        // arrange: Insert multiple users into the in-memory database
+        var userRepository = CreateScopedRepository();
         var users = new List<User>
         {
             new User { Username = "Alice", Email = "alice@example.com", Phone = "+551100000000", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
@@ -114,18 +124,19 @@ public class UserRepositoryTests
         };
 
         foreach (var user in users)
-            await _userRepository.CreateAsync(user);
+            await userRepository.CreateAsync(user);
 
-        var page1 = await _userRepository.GetAllUsersAsync(1, 3);
-        var page2 = await _userRepository.GetAllUsersAsync(2, 3);
+        // act: Request page 1 with a page size of 3 and page 2 with a page size of 3
+        var page1 = await userRepository.GetAllUsersAsync(1, 3);
+        var page2 = await userRepository.GetAllUsersAsync(2, 3);
 
-        // Assert: Page 1 should contain "Alice", "Bob", "Charlie" (ordered by Username)
+        // assert: Page 1 should contain "Alice", "Bob", "Charlie" (ordered by Username)
         page1.Should().HaveCount(3);
         page1[0].Username.Should().Be("Alice");
         page1[1].Username.Should().Be("Bob");
         page1[2].Username.Should().Be("Charlie");
 
-        // Assert: Page 2 should contain "David", "Eve", "Frank"
+        // assert: Page 2 should contain "David", "Eve", "Frank"
         page2.Should().HaveCount(3);
         page2[0].Username.Should().Be("David");
         page2[1].Username.Should().Be("Eve");
@@ -135,9 +146,8 @@ public class UserRepositoryTests
     [Fact(DisplayName = "GetAllUsersAsync should return an empty list if page is out of range")]
     public async Task GetAllUsersAsync_ShouldReturnEmptyList_ForPageOutOfRange()
     {
-        var _userRepository = CreateScopedRepository();
-
-        // Arrange: Insert only 2 users
+        // arrange: Insert only 2 users into the in-memory database
+        var userRepository = CreateScopedRepository();
         var users = new List<User>
         {
             new User { Username = "Alice", Email = "alice@example.com", Phone = "+551100000000", Password = "pwd", Role = UserRole.Customer, Status = UserStatus.Active },
@@ -145,12 +155,12 @@ public class UserRepositoryTests
         };
 
         foreach (var user in users)
-            await _userRepository.CreateAsync(user);
+            await userRepository.CreateAsync(user);
 
-        // Act: Request page 2 with a page size of 2 (which should be out of range)
-        var page2 = await _userRepository.GetAllUsersAsync(2, 2);
+        // act: Request page 2 with a page size of 2 (out of range)
+        var page2 = await userRepository.GetAllUsersAsync(2, 2);
 
-        // Assert: The returned list should be empty
+        // assert: The returned list should be empty
         page2.Should().BeEmpty();
     }
 }

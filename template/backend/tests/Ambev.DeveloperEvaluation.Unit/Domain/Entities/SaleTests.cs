@@ -1,60 +1,77 @@
 ﻿using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.Domain.Entities;
-
-public class SaleTests
+namespace Ambev.DeveloperEvaluation.Unit.Domain.Entities
 {
-    [Fact(DisplayName = "Cancel should mark sale as cancelled and update timestamp")]
-    public void Given_Sale_When_Cancelled_Then_IsCancelledShouldBeTrue_And_UpdatedAtSet()
+    public class SaleTests
     {
-        var sale = SaleTestData.GenerateValidSale();
-        sale.Cancel();
+        [Fact(DisplayName = "Cancel should mark sale as cancelled and update timestamp")]
+        public void Given_Sale_When_Cancelled_Then_IsCancelledShouldBeTrue_And_UpdatedAtSet()
+        {
+            // arrange
+            var sale = SaleTestData.GenerateValidSale();
 
-        Assert.True(sale.IsCancelled);
-        Assert.NotNull(sale.UpdatedAt);
-    }
+            // act
+            sale.Cancel();
 
-    [Fact(DisplayName = "Validation should pass for valid sale")]
-    public void Given_ValidSale_When_Validated_Then_ShouldBeValid()
-    {
-        var sale = SaleTestData.GenerateValidSale();
+            // assert
+            Assert.True(sale.IsCancelled);
+            Assert.NotNull(sale.UpdatedAt);
+        }
 
-        var result = sale.Validate();
+        [Fact(DisplayName = "Validation should pass for valid sale")]
+        public void Given_ValidSale_When_Validated_Then_ShouldBeValid()
+        {
+            // arrange
+            var sale = SaleTestData.GenerateValidSale();
 
-        Assert.True(result.IsValid);
-    }
+            // act
+            var result = sale.Validate();
 
-    [Fact(DisplayName = "Validation should fail if sale number is empty")]
-    public void Given_EmptySaleNumber_When_Validated_Then_ShouldBeInvalid()
-    {
-        var sale = SaleTestData.GenerateValidSale();
-        sale.SaleNumber = "";
+            // assert
+            Assert.True(result.IsValid);
+        }
 
-        var result = sale.Validate();
+        [Fact(DisplayName = "Validation should fail if sale number is empty")]
+        public void Given_EmptySaleNumber_When_Validated_Then_ShouldBeInvalid()
+        {
+            // arrange
+            var sale = SaleTestData.GenerateValidSale();
+            sale.SaleNumber = "";
 
-        Assert.False(result.IsValid);
-    }
+            // act
+            var result = sale.Validate();
 
-    [Fact(DisplayName = "Validation should fail if total amount is negative")]
-    public void Given_NegativeTotalAmount_When_Validated_Then_ShouldBeInvalid()
-    {
-        var sale = SaleTestData.GenerateValidSale();
-        sale.Items.ForEach(x=> x.TotalItemAmount = -100);
+            // assert
+            Assert.False(result.IsValid);
+        }
 
-        var result = sale.Validate();
+        [Fact(DisplayName = "Validation should fail if total amount is negative")]
+        public void Given_NegativeTotalAmount_When_Validated_Then_ShouldBeInvalid()
+        {
+            // arrange
+            var sale = SaleTestData.GenerateValidSale();
+            sale.Items.ForEach(x => x.TotalItemAmount = -100);
 
-        Assert.False(result.IsValid);
-    }
+            // act
+            var result = sale.Validate();
 
-    [Fact(DisplayName = "Validation should fail if there are no sale items")]
-    public void Given_SaleWithoutItems_When_Validated_Then_ShouldBeInvalid()
-    {
-        var sale = SaleTestData.GenerateValidSale();
-        sale.Items.Clear();
+            // assert
+            Assert.False(result.IsValid);
+        }
 
-        var result = sale.Validate();
+        [Fact(DisplayName = "Validation should fail if there are no sale items")]
+        public void Given_SaleWithoutItems_When_Validated_Then_ShouldBeInvalid()
+        {
+            // arrange
+            var sale = SaleTestData.GenerateValidSale();
+            sale.Items.Clear();
 
-        Assert.False(result.IsValid);
+            // act
+            var result = sale.Validate();
+
+            // assert
+            Assert.False(result.IsValid);
+        }
     }
 }

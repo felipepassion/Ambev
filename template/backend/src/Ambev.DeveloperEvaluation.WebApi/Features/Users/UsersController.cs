@@ -126,6 +126,7 @@ public class UsersController : BaseController
     /// <param name="cancellationToken">Allows the operation to be canceled if needed, providing control over long-running tasks.</param>
     /// <returns>Returns a paginated list of users wrapped in an IActionResult.</returns>
     [HttpGet("list")]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery query, CancellationToken cancellationToken)
     {
         var pagedList = await _mediator.Send(new GetUsersCommand(query.PageNumber, query.PageSize), cancellationToken);

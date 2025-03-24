@@ -1,5 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Application;
-using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Integration.Filters;
 using Ambev.DeveloperEvaluation.Integration.TestsData;
@@ -241,11 +240,11 @@ namespace Ambev.DeveloperEvaluation.Integration.Tests
             var createdApiResponse = createdResult!.Value as ApiResponseWithData<CreateSaleResponse>;
             var saleId = createdApiResponse!.Data!.Id;
 
-            // Act: deletar e depois tentar Get
+            // Act
             var deleteResult = await _controller.DeleteSale(saleId, CancellationToken.None);
             deleteResult.Should().BeOfType<OkObjectResult>();
 
-            // Assert: agora deve lançar KeyNotFoundException
+            // Assert
             Func<Task> act = () => _controller.GetSale(saleId, CancellationToken.None);
             await act.Should().ThrowAsync<KeyNotFoundException>();
         }

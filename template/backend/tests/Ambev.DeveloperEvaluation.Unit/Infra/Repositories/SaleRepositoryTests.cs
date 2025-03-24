@@ -1,5 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
 using FluentAssertions;
@@ -13,18 +12,17 @@ public class SaleRepositoryTests
     private SaleRepository SetupDatabaseContext()
     {
         var options = new DbContextOptionsBuilder<DefaultContext>()
-                    .UseInMemoryDatabase(databaseName: $"{nameof(SaleRepositoryTests)}Db")
-                    .Options;
-
-        var _context = new DefaultContext(options);
-        return new SaleRepository(_context);
+            .UseInMemoryDatabase(databaseName: $"{nameof(SaleRepositoryTests)}Db")
+            .Options;
+        var context = new DefaultContext(options);
+        return new SaleRepository(context);
     }
 
     [Fact]
     public async Task CreateAsync_ShouldAddSaleToDatabase()
     {
-        var _saleRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleRepository = SetupDatabaseContext();
         var sale = new Sale
         {
             SaleNumber = "SALE-123",
@@ -42,12 +40,13 @@ public class SaleRepositoryTests
             }
         };
 
-        var created = await _saleRepository.CreateAsync(sale);
+        // act
+        var created = await saleRepository.CreateAsync(sale);
 
+        // assert
         created.Should().NotBeNull();
         created.Id.Should().NotBe(Guid.Empty);
-
-        var fromDb = await _saleRepository.GetByIdAsync(created.Id);
+        var fromDb = await saleRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.SaleNumber.Should().Be("SALE-123");
         fromDb.TotalAmount.Should().Be(sale.TotalAmount);
@@ -56,8 +55,8 @@ public class SaleRepositoryTests
     [Fact]
     public async Task UpdateAsync_ShouldUpdateSaleInDatabase()
     {
-        var _saleRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleRepository = SetupDatabaseContext();
         var sale = new Sale
         {
             SaleNumber = "SALE-ABC",
@@ -74,18 +73,18 @@ public class SaleRepositoryTests
                 }
             }
         };
-        var created = await _saleRepository.CreateAsync(sale);
+        var created = await saleRepository.CreateAsync(sale);
 
+        // act
         created.SaleNumber = "SALE-XYZ";
         created.IsCancelled = true;
+        var updated = await saleRepository.UpdateAsync(created);
 
-        var updated = await _saleRepository.UpdateAsync(created);
-
+        // assert
         updated.SaleNumber.Should().Be("SALE-XYZ");
         updated.IsCancelled.Should().BeTrue();
         updated.TotalAmount.Should().Be(sale.TotalAmount);
-
-        var fromDb = await _saleRepository.GetByIdAsync(created.Id);
+        var fromDb = await saleRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.SaleNumber.Should().Be("SALE-XYZ");
     }
@@ -93,17 +92,21 @@ public class SaleRepositoryTests
     [Fact]
     public async Task GetByIdAsync_ShouldReturnNull_WhenSaleDoesNotExist()
     {
-        var _saleRepository = SetupDatabaseContext();
+        // arrange
+        var saleRepository = SetupDatabaseContext();
 
-        var result = await _saleRepository.GetByIdAsync(Guid.NewGuid());
+        // act
+        var result = await saleRepository.GetByIdAsync(Guid.NewGuid());
+
+        // assert
         result.Should().BeNull();
     }
 
     [Fact]
     public async Task GetBySaleNumberAsync_ShouldReturnCorrectSale()
     {
-        var _saleRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleRepository = SetupDatabaseContext();
         var sale = new Sale
         {
             SaleNumber = "SALE-FIND",
@@ -120,9 +123,12 @@ public class SaleRepositoryTests
                 }
             }
         };
-        await _saleRepository.CreateAsync(sale);
+        await saleRepository.CreateAsync(sale);
 
-        var foundSale = await _saleRepository.GetBySaleNumberAsync("SALE-FIND");
+        // act
+        var foundSale = await saleRepository.GetBySaleNumberAsync("SALE-FIND");
+
+        // assert
         foundSale.Should().NotBeNull();
         foundSale!.SaleNumber.Should().Be("SALE-FIND");
     }
@@ -130,8 +136,8 @@ public class SaleRepositoryTests
     [Fact]
     public async Task DeleteAsync_ShouldRemoveSaleFromDatabase()
     {
-        var _saleRepository = SetupDatabaseContext();
-
+        // arrange
+        var saleRepository = SetupDatabaseContext();
         var sale = new Sale
         {
             SaleNumber = "SALE-DELETE",
@@ -148,12 +154,14 @@ public class SaleRepositoryTests
                 }
             }
         };
-        var created = await _saleRepository.CreateAsync(sale);
+        var created = await saleRepository.CreateAsync(sale);
 
-        var success = await _saleRepository.DeleteAsync(created.Id);
+        // act
+        var success = await saleRepository.DeleteAsync(created.Id);
+
+        // assert
         success.Should().BeTrue();
-
-        var fromDb = await _saleRepository.GetByIdAsync(created.Id);
+        var fromDb = await saleRepository.GetByIdAsync(created.Id);
         fromDb.Should().BeNull();
     }
 }

@@ -108,6 +108,9 @@ public class SalesControllerTests
         var getSaleResult = new GetSaleResult
         {
             Id = saleId,
+            UserId = Guid.Empty,
+            SaleNumber = Guid.NewGuid().ToString(),
+            SaleDate = DateTime.UtcNow,
             TotalAmount = 200m,
             IsCancelled = false,
             Items = new List<GetSaleItemResult>
@@ -125,6 +128,9 @@ public class SalesControllerTests
         var getSaleResponse = new GetSaleResponse
         {
             Id = saleId,
+            SaleDate = DateTime.UtcNow,
+            SaleNumber = Guid.NewGuid().ToString(),
+            UserId = Guid.Empty,
             TotalAmount = 200m,
             IsCancelled = false,
             Items = new List<GetSaleItemResponse>

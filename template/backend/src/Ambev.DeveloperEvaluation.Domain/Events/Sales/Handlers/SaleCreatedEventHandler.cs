@@ -32,7 +32,7 @@ public class SaleCreatedEventHandler :
 
     public Task Handle(SaleItemCreatedEvent notification, CancellationToken cancellationToken)
     {
-        Log.Information("item {SaleItemId}", notification);
+        Log.Information("{SaleItemId}", notification);
         return Task.CompletedTask;
     }
 

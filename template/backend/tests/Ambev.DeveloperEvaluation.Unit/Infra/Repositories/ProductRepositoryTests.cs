@@ -14,16 +14,15 @@ public class ProductRepositoryTests
         var options = new DbContextOptionsBuilder<DefaultContext>()
             .UseInMemoryDatabase(databaseName: $"{Guid.NewGuid()}-Db")
             .Options;
-
-        var _context = new DefaultContext(options);
-        return new ProductRepository(_context);
+        var context = new DefaultContext(options);
+        return new ProductRepository(context);
     }
 
     [Fact]
     public async Task CreateAsync_ShouldAddProductToDatabase()
     {
-        var _productRepository = SetupInMemoryDatabase();
-
+        // arrange
+        var productRepository = SetupInMemoryDatabase();
         var product = new Product
         {
             Name = "Test Product",
@@ -31,12 +30,13 @@ public class ProductRepositoryTests
             UnitPrice = 12.99m
         };
 
-        var created = await _productRepository.CreateAsync(product);
+        // act
+        var created = await productRepository.CreateAsync(product);
 
+        // assert
         created.Should().NotBeNull();
         created.Id.Should().NotBe(Guid.Empty);
-
-        var fromDb = await _productRepository.GetByIdAsync(created.Id);
+        var fromDb = await productRepository.GetByIdAsync(created.Id);
         fromDb.Should().NotBeNull();
         fromDb!.Name.Should().Be("Test Product");
         fromDb.UnitPrice.Should().Be(12.99m);
@@ -45,26 +45,33 @@ public class ProductRepositoryTests
     [Fact]
     public async Task GetByIdAsync_ShouldReturnNull_WhenProductDoesNotExist()
     {
-        var _productRepository = SetupInMemoryDatabase();
+        // arrange
+        var productRepository = SetupInMemoryDatabase();
 
-        var result = await _productRepository.GetByIdAsync(Guid.NewGuid());
+        // act
+        var result = await productRepository.GetByIdAsync(Guid.NewGuid());
+
+        // assert
         result.Should().BeNull();
     }
 
     [Fact]
     public async Task GetByNameAsync_ShouldReturnCorrectProduct()
     {
-        var _productRepository = SetupInMemoryDatabase();
-
+        // arrange
+        var productRepository = SetupInMemoryDatabase();
         var product = new Product
         {
             Name = "Special Product",
             Description = "Desc",
             UnitPrice = 29.99m
         };
-        await _productRepository.CreateAsync(product);
+        await productRepository.CreateAsync(product);
 
-        var retrieved = await _productRepository.GetByNameAsync("Special Product");
+        // act
+        var retrieved = await productRepository.GetByNameAsync("Special Product");
+
+        // assert
         retrieved.Should().NotBeNull();
         retrieved!.Name.Should().Be("Special Product");
     }
@@ -72,22 +79,23 @@ public class ProductRepositoryTests
     [Fact]
     public async Task GetAllPagedAsync_ShouldReturnCorrectPage()
     {
-        var _productRepository = SetupInMemoryDatabase();
-
-        // Insere múltiplos produtos para paginar
+        // arrange
+        var productRepository = SetupInMemoryDatabase();
         for (int i = 0; i < 5; i++)
         {
-            await _productRepository.CreateAsync(new Product
+            await productRepository.CreateAsync(new Product
             {
                 Name = $"Product_{i}",
                 UnitPrice = i + 1
             });
         }
 
-        var (products, totalCount) = await _productRepository.GetAllPagedAsync(2, 2);
+        // act
+        var (products, totalCount) = await productRepository.GetAllPagedAsync(2, 2);
 
-        totalCount.Should().Be(5);      // Total de produtos
-        products.Should().HaveCount(2); // Tamanho da página = 2 (segunda página)
+        // assert
+        totalCount.Should().Be(5);      // Total number of products
+        products.Should().HaveCount(2); // Page size = 2 (second page)
         products.First().Name.Should().Be("Product_2");
         products.Last().Name.Should().Be("Product_3");
     }
@@ -95,20 +103,21 @@ public class ProductRepositoryTests
     [Fact]
     public async Task DeleteAsync_ShouldRemoveProductFromDatabase()
     {
-        var _productRepository = SetupInMemoryDatabase();
-
+        // arrange
+        var productRepository = SetupInMemoryDatabase();
         var product = new Product
         {
             Name = "Deletable Product",
             UnitPrice = 45.50m
         };
-        var created = await _productRepository.CreateAsync(product);
+        var created = await productRepository.CreateAsync(product);
 
-        var success = await _productRepository.DeleteAsync(created.Id);
+        // act
+        var success = await productRepository.DeleteAsync(created.Id);
+
+        // assert
         success.Should().BeTrue();
-
-        var fromDb = await _productRepository.GetByIdAsync(created.Id);
-
+        var fromDb = await productRepository.GetByIdAsync(created.Id);
         fromDb.Should().BeNull();
     }
 }
