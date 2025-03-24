@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Domain.Events.Handlers;
+namespace Ambev.DeveloperEvaluation.Domain.Events.Sales.Handlers;
 
 public class SaleCreatedEventHandler : INotificationHandler<SaleCreatedEvent>
 {

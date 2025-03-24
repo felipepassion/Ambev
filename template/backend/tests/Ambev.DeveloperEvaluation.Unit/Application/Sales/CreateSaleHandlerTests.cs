@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Events;
+using Ambev.DeveloperEvaluation.Domain.Events.Sales;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 using FluentAssertions;
@@ -11,7 +11,7 @@ using NSubstitute;
 using System.Security.Claims;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Sales;
 
 /// <summary>
 /// Contains unit tests for the <see cref="CreateSaleHandler"/> class.
@@ -203,7 +203,7 @@ public class CreateSaleHandlerTests
         if (item.UnitPrice != unitPrice) return false;
 
         var rawTotal = unitPrice * quantity;
-        var expectedTotal = rawTotal - (rawTotal * discount);
+        var expectedTotal = rawTotal - rawTotal * discount;
         // small tolerance check for floating arithmetic if needed
         if (item.TotalItemAmount != expectedTotal) return false;
 
