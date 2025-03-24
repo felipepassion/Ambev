@@ -85,7 +85,7 @@ public class UsersIntegrationTests : IAsyncLifetime
         
         apiResponse.Data!.Id.Should().NotBe(Guid.Empty);
         apiResponse.Data.Username.Should().Be(request.Username);
-        var userFromDb = await _context.Users.FindAsync(apiResponse.Data.Id);
+        var userFromDb = await _context.Users.FindAsync(apiResponse.Data!.Id);
         userFromDb.Should().NotBeNull();
         userFromDb.Username.Should().Be(request.Username);
     }
@@ -111,14 +111,14 @@ public class UsersIntegrationTests : IAsyncLifetime
         var createdResult = createActionResult as CreatedResult;
         createdResult.Should().NotBeNull();
         var createdApiResponse = createdResult.Value as ApiResponseWithData<CreateUserResponse>;
-        var userId = createdApiResponse.Data.Id;
+        var userId = createdApiResponse!.Data!.Id;
         var getActionResult = await _controller.GetUser(userId, CancellationToken.None);
         var okResult = getActionResult as OkObjectResult;
         okResult.Should().NotBeNull();
         okResult.StatusCode.Should().Be(200);
         var getApiResponse = okResult.Value as ApiResponseWithData<GetUserResult>;
         getApiResponse.Should().NotBeNull();
-        getApiResponse.Data.Id.Should().Be(userId);
+        getApiResponse.Data!.Id.Should().Be(userId);
         getApiResponse.Data.Username.Should().Be(createReq.Username);
         getApiResponse.Data.Email.Should().Be(createReq.Email);
         getApiResponse.Data.Phone.Should().Be(createReq.Phone);
@@ -141,7 +141,7 @@ public class UsersIntegrationTests : IAsyncLifetime
         var createdResult = createActionResult as CreatedResult;
         createdResult.Should().NotBeNull();
         var createdApiResponse = createdResult.Value as ApiResponseWithData<CreateUserResponse>;
-        var userId = createdApiResponse.Data.Id;
+        var userId = createdApiResponse!.Data!.Id;
         var deleteResult = await _controller.DeleteUser(userId, CancellationToken.None);
         deleteResult.Should().BeOfType<OkObjectResult>();
         Func<Task> act = () => _controller.GetUser(userId, CancellationToken.None);
@@ -156,7 +156,7 @@ public class UsersIntegrationTests : IAsyncLifetime
         var createdResult = createActionResult as CreatedResult;
         createdResult.Should().NotBeNull();
         var createdApiResponse = createdResult.Value as ApiResponseWithData<CreateUserResponse>;
-        var userId = createdApiResponse.Data.Id;
+        var userId = createdApiResponse!.Data!.Id;
         var deleteActionResult = await _controller.DeleteUser(userId, CancellationToken.None);
         var okDeleteResult = deleteActionResult as OkObjectResult;
         okDeleteResult.Should().NotBeNull();

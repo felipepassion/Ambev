@@ -89,7 +89,7 @@ namespace Ambev.DeveloperEvaluation.Tests.Integration
             apiResponse.Data.Name.Should().Be(request.Name);
 
             // Verify from the database
-            var branchFromDb = await _context.Branches.FindAsync(apiResponse.Data.Id);
+            var branchFromDb = await _context.Branches.FindAsync(apiResponse.Data!.Id);
             branchFromDb.Should().NotBeNull();
             branchFromDb!.Name.Should().Be(request.Name);
         }
@@ -193,7 +193,7 @@ namespace Ambev.DeveloperEvaluation.Tests.Integration
             createdResult.Should().NotBeNull();
 
             var createdApiResponse = createdResult.Value as ApiResponseWithData<CreateBranchResponse>;
-            var branchId = createdApiResponse!.Data.Id;
+            var branchId = createdApiResponse!.Data!.Id;
 
             var deleteActionResult = await _controller.DeleteBranch(branchId, CancellationToken.None);
             var okDeleteResult = deleteActionResult as OkObjectResult;

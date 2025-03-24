@@ -89,7 +89,7 @@ namespace Ambev.DeveloperEvaluation.Tests.Integration
             apiResponse.Data.Name.Should().Be(request.Name);
 
             // Verify from the database
-            var productFromDb = await _context.Products.FindAsync(apiResponse.Data.Id);
+            var productFromDb = await _context.Products.FindAsync(apiResponse.Data!.Id);
             productFromDb.Should().NotBeNull();
             productFromDb!.Name.Should().Be(request.Name);
         }
@@ -193,7 +193,7 @@ namespace Ambev.DeveloperEvaluation.Tests.Integration
             createdResult.Should().NotBeNull();
 
             var createdApiResponse = createdResult.Value as ApiResponseWithData<CreateProductResponse>;
-            var productId = createdApiResponse!.Data.Id;
+            var productId = createdApiResponse!.Data!.Id;
 
             var deleteActionResult = await _controller.DeleteProduct(productId, CancellationToken.None);
             var okDeleteResult = deleteActionResult as OkObjectResult;

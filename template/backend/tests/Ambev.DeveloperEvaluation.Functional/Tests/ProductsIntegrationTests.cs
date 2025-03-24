@@ -123,7 +123,6 @@ public class ProductsIntegrationTests : IClassFixture<ProductsIntegrationTestFac
             await createResp.Content.ReadFromJsonAsync<ApiResponseWithData<CreateProductResponse>>();
         var productId = createdData!.Data!.Id;
 
-       
         var delResp = await _client.DeleteAsync($"/api/products/{productId}");
         delResp.StatusCode.Should().Be(HttpStatusCode.OK);
 

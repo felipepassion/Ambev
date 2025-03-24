@@ -138,7 +138,7 @@ public class SalesIntegrationTests : IClassFixture<SalesIntegrationTestFactory>
         var delResp = await _client.DeleteAsync($"/api/sales/{saleId}");
         delResp.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        // 3) Attempt to GET again => KeyNotFound => 404 (if your global filter maps it)
+        // 3) Attempt to GET again => KeyNotFound => 404
         var getResp = await _client.GetAsync($"/api/sales/{saleId}");
         getResp.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }

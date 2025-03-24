@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.Domain.Events;
+﻿using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentValidation;
 using MediatR;
@@ -31,7 +31,6 @@ public class DeleteBranchHandler : IRequestHandler<DeleteBranchCommand, DeleteBr
         if (!success)
             throw new KeyNotFoundException($"Branch with ID {request.Id} not found");
 
-        // Publish BranchDeletedEvent after successful deletion
         await _mediator.Publish(new BranchDeletedEvent(request.Id), cancellationToken);
 
         return new DeleteBranchResponse { Success = true };

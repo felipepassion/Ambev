@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="Events\Branches\" />
     <Folder Include="Exceptions\" />
     <Folder Include="ValueObjects\" />
   </ItemGroup>

@@ -36,8 +36,25 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             }
             catch (Exception ex)
             {
-
+                await HandleExceptionAsync(context, ex);
             }
+        }
+
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            var response = new ApiResponse
+            {
+                Success = false,
+                Message = ex.Message
+            };
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            Log.Logger.Error(ex, "An error occurred");
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
         }
 
         private static Task HandleInvalidOperationExceptionAsync(HttpContext context, InvalidOperationException exception)
@@ -55,7 +72,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
-            
+
             Log.Logger.Error(exception, "An error occurred");
 
             return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));

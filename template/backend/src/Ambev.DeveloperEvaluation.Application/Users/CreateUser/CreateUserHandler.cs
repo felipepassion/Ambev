@@ -1,57 +1,62 @@
-﻿using AutoMapper;
+﻿// CreateUserHandler.cs
+using AutoMapper;
 using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Domain.Events;
+using Ambev.DeveloperEvaluation.Domain.Events.Users;
 
-namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-
-/// <summary>
-/// Handler for processing CreateUserCommand requests
-/// </summary>
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserResult>
+namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
-    private readonly IPasswordHasher _passwordHasher;
-
     /// <summary>
-    /// Initializes a new instance of CreateUserHandler
+    /// Handler for processing CreateUserCommand requests.
+    /// Validates the command, creates a new user, persists it, and publishes a UserCreatedEvent.
     /// </summary>
-    /// <param name="userRepository">The user repository</param>
-    /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for CreateUserCommand</param>
-    public CreateUserHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher)
+    public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserResult>
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
-        _passwordHasher = passwordHasher;
-    }
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        private readonly IPasswordHasher _passwordHasher;
+        private readonly IMediator _mediator;
 
-    /// <summary>
-    /// Handles the CreateUserCommand request
-    /// </summary>
-    /// <param name="command">The CreateUser command</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The created user details</returns>
-    public async Task<CreateUserResult> Handle(CreateUserCommand command, CancellationToken cancellationToken)
-    {
-        var validator = new CreateUserCommandValidator();
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        public CreateUserHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher, IMediator mediator)
+        {
+            _userRepository = userRepository;
+            _mapper = mapper;
+            _passwordHasher = passwordHasher;
+            _mediator = mediator;
+        }
 
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        public async Task<CreateUserResult> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+        {
+            var validator = new CreateUserCommandValidator();
+            var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
 
-        var existingUser = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
-        if (existingUser != null)
-            throw new InvalidOperationException($"User with email {command.Email} already exists");
+            var existingUser = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
+            if (existingUser != null)
+                throw new InvalidOperationException($"User with email {command.Email} already exists");
 
-        var user = _mapper.Map<User>(command);
-        user.Password = _passwordHasher.HashPassword(command.Password);
+            var user = _mapper.Map<User>(command);
+            user.Password = _passwordHasher.HashPassword(command.Password);
 
-        var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
-        var result = _mapper.Map<CreateUserResult>(createdUser);
-        return result;
+            var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
+            var result = _mapper.Map<CreateUserResult>(createdUser);
+
+            // Publish UserCreatedEvent after successful creation
+            await _mediator.Publish(new UserRegisteredEvent(
+                new User
+                {
+                    Id = createdUser.Id,
+                    Email = createdUser.Email,
+                    Username =
+                createdUser.Username
+                }), cancellationToken);
+
+            return result;
+        }
     }
 }

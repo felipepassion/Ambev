@@ -1,43 +1,34 @@
-using AutoMapper;
-using MediatR;
-using FluentValidation;
+// GetUserHandler.cs
+using Ambev.DeveloperEvaluation.Domain.Events;
+using Ambev.DeveloperEvaluation.Domain.Events.Users;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using AutoMapper;
+using FluentValidation;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
 
 /// <summary>
-/// Handler for processing GetUserCommand requests
+/// Handler for processing GetUserCommand requests.
+/// Validates the command, retrieves the user, and publishes a UserRetrievedEvent.
 /// </summary>
 public class GetUserHandler : IRequestHandler<GetUserCommand, GetUserResult>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    /// <summary>
-    /// Initializes a new instance of GetUserHandler
-    /// </summary>
-    /// <param name="userRepository">The user repository</param>
-    /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for GetUserCommand</param>
-    public GetUserHandler(
-        IUserRepository userRepository,
-        IMapper mapper)
+    public GetUserHandler(IUserRepository userRepository, IMapper mapper, IMediator mediator)
     {
         _userRepository = userRepository;
         _mapper = mapper;
+        _mediator = mediator;
     }
 
-    /// <summary>
-    /// Handles the GetUserCommand request
-    /// </summary>
-    /// <param name="request">The GetUser command</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The user details if found</returns>
     public async Task<GetUserResult> Handle(GetUserCommand request, CancellationToken cancellationToken)
     {
         var validator = new GetUserValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
@@ -45,6 +36,11 @@ public class GetUserHandler : IRequestHandler<GetUserCommand, GetUserResult>
         if (user == null)
             throw new KeyNotFoundException($"User with ID {request.Id} not found");
 
-        return _mapper.Map<GetUserResult>(user);
+        var result = _mapper.Map<GetUserResult>(user);
+
+        // Publish UserRetrievedEvent after successful retrieval
+        await _mediator.Publish(new UserRetrievedEvent(user.Id), cancellationToken);
+
+        return result;
     }
 }

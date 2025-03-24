@@ -116,10 +116,12 @@ public class CreateProductHandlerTests
             Description = command.Description,
             UnitPrice = command.UnitPrice
         };
+        var productResult = new CreateProductResult { Id = productEntity.Id };
 
         _mapper.Map<Product>(command).Returns(productEntity);
         _productRepository.CreateAsync(Arg.Any<Product>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(productEntity));
+        _mapper.Map<CreateProductResult>(productEntity).Returns(productResult);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

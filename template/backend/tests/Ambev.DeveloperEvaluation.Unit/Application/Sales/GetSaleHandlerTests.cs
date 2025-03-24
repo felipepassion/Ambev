@@ -43,7 +43,7 @@ public class GetSaleHandlerTests
         };
         var command = new GetSaleCommand(saleId);
 
-        _saleRepository.GetByIdAsync(saleId, Arg.Any<CancellationToken>())
+        _saleRepository.GetByIdAsync(saleId, Arg.Any<CancellationToken>())!
             .Returns(Task.FromResult(sale));
 
         var mappedResult = new GetSaleResult { Id = saleId };
@@ -67,8 +67,8 @@ public class GetSaleHandlerTests
         var saleId = Guid.NewGuid();
         var command = new GetSaleCommand(saleId);
 
-        _saleRepository.GetByIdAsync(saleId, Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult<Sale>(null));
+        _saleRepository.GetByIdAsync(saleId, Arg.Any<CancellationToken>())!
+            .Returns(Task.FromResult<Sale>(null!));
 
         // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(

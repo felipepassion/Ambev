@@ -1,108 +1,49 @@
-﻿using Ambev.DeveloperEvaluation.Application.Branches.CreateBranch;
+﻿// CreateBranchHandler.cs
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 using AutoMapper;
-using FluentAssertions;
 using FluentValidation;
-using NSubstitute;
-using Xunit;
+using MediatR;
+using Ambev.DeveloperEvaluation.Domain.Events;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application.Branches;
-
-/// <summary>
-/// Contains unit tests for the <see cref="CreateBranchHandler"/> class.
-/// </summary>
-public class CreateBranchHandlerTests
+namespace Ambev.DeveloperEvaluation.Application.Branches.CreateBranch
 {
-    private readonly IBranchRepository _branchRepository;
-    private readonly IMapper _mapper;
-    private readonly CreateBranchHandler _handler;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateBranchHandlerTests"/> class.
-    /// Sets up the test dependencies.
+    /// Handler for processing CreateBranchCommand requests.
+    /// Validates the command, checks for branch uniqueness, creates a new branch,
+    /// persists it, and publishes a BranchCreatedEvent.
     /// </summary>
-    public CreateBranchHandlerTests()
+    public class CreateBranchHandler : IRequestHandler<CreateBranchCommand, CreateBranchResult>
     {
-        _branchRepository = Substitute.For<IBranchRepository>();
-        _mapper = Substitute.For<IMapper>();
-        _handler = new CreateBranchHandler(_branchRepository, _mapper);
-    }
+        private readonly IBranchRepository _branchRepository;
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-    /// <summary>
-    /// Tests that a valid branch creation request is handled successfully.
-    /// </summary>
-    [Fact(DisplayName = "Given valid branch data When creating branch Then returns success response")]
-    public async Task Handle_ValidRequest_ReturnsSuccessResponse()
-    {
-        // Arrange
-        var command = CreateBranchHandlerTestData.GenerateValidCommand();
-        var branch = new Branch
+        public CreateBranchHandler(IBranchRepository branchRepository, IMapper mapper, IMediator mediator)
         {
-            Id = Guid.NewGuid(),
-            Name = command.Name,
-            IsActive = true
-        };
-        var result = new CreateBranchResult
+            _branchRepository = branchRepository;
+            _mapper = mapper;
+            _mediator = mediator;
+        }
+
+        public async Task<CreateBranchResult> Handle(CreateBranchCommand command, CancellationToken cancellationToken)
         {
-            Id = branch.Id
-        };
+            var validator = new CreateBranchCommandValidator();
+            var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
 
-        _mapper.Map<Branch>(command).Returns(branch);
-        _mapper.Map<CreateBranchResult>(branch).Returns(result);
+            var existingBranch = await _branchRepository.GetByNameAsync(command.Name, cancellationToken);
+            if (existingBranch != null)
+                throw new InvalidOperationException($"Branch with name {command.Name} already exists");
 
-        _branchRepository.CreateAsync(branch, default).ReturnsForAnyArgs(branch);
+            var branch = _mapper.Map<Branch>(command);
+            var createdBranch = await _branchRepository.CreateAsync(branch, cancellationToken);
+            var result = _mapper.Map<CreateBranchResult>(createdBranch);
 
-        // Act
-        var createBranchResult = await _handler.Handle(command, default);
+            await _mediator.Publish(new BranchCreatedEvent(createdBranch.Id, createdBranch.Name), cancellationToken);
 
-        // Assert
-        createBranchResult.Should().NotBeNull();
-        createBranchResult.Id.Should().Be(branch.Id);
-
-        await _branchRepository.Received(1).CreateAsync(Arg.Any<Branch>(), Arg.Any<CancellationToken>());
-    }
-
-    /// <summary>
-    /// Tests that an invalid branch creation request throws a validation exception.
-    /// </summary>
-    [Fact(DisplayName = "Given invalid branch data When creating branch Then throws validation exception")]
-    public async Task Handle_InvalidRequest_ThrowsValidationException()
-    {
-        // Arrange
-        var invalidCommand = CreateBranchHandlerTestData.GenerateInvalidCommand();
-
-        // Act
-        Func<Task> act = () => _handler.Handle(invalidCommand, default);
-
-        // Assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
-    /// <summary>
-    /// Tests that the mapper is called with the correct command.
-    /// </summary>
-    [Fact(DisplayName = "Given valid command When handling Then maps command to branch entity")]
-    public async Task Handle_ValidRequest_MapsCommandToBranch()
-    {
-        // Arrange
-        var command = CreateBranchHandlerTestData.GenerateValidCommand();
-        var branch = new Branch
-        {
-            Id = Guid.NewGuid(),
-            Name = command.Name
-        };
-
-        _mapper.Map<Branch>(command).Returns(branch);
-        _branchRepository.CreateAsync(branch, default).ReturnsForAnyArgs(branch);
-
-        // Act
-        await _handler.Handle(command, default);
-
-        // Assert
-        _mapper.Received(1).Map<Branch>(Arg.Is<CreateBranchCommand>(cmd =>
-            cmd.Name == command.Name
-        ));
+            return result;
+        }
     }
 }

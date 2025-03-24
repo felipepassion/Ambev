@@ -135,7 +135,7 @@ namespace Ambev.DeveloperEvaluation.Tests.Integration
             apiResponse.Should().NotBeNull();
             apiResponse!.Data!.Id.Should().NotBe(Guid.Empty);
 
-            var saleFromDb = await _context.Sales.FindAsync(apiResponse.Data.Id);
+            var saleFromDb = await _context.Sales.FindAsync(apiResponse.Data!.Id);
             saleFromDb.Should().NotBeNull();
         }
 
