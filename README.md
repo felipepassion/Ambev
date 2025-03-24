@@ -68,6 +68,11 @@ Manages sales records, including creation, retrieval, and cancellation. Applies 
 - 10–20 units: 20% off
 - >20 units: **Invalid**
 
+## Cancel Sale
+![image](https://github.com/user-attachments/assets/258341b2-5c75-4ece-8d42-0b40ddbb7d3a)
+## Assert cancel sale
+![image](https://github.com/user-attachments/assets/f0573b50-44c6-4748-887f-a16daaaf9d34)
+
 ---
 
 ### 🏢 Branches
@@ -118,6 +123,8 @@ The application uses **Serilog + Seq** for structured logging of key events such
 
 ## Postman collection 
 ![image](https://github.com/user-attachments/assets/31aa2bf6-56bf-4875-beb5-61b36e88fded)
+
+![image](https://github.com/user-attachments/assets/b104ca58-b8d7-4772-874f-93ef8f1d9e9f)
 
 
 Example logs:
